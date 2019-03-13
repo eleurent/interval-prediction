@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: Interval Prediction for Continuous-Time Systems with Parametric Uncertainties
+description: Edouard Leurent, Denis Efimov, Tarek Raïssi, Wilfrid Perruquetti
+
+github:
+  repository_url: http://github.com/eleurent/rl-agents
