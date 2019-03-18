@@ -54,8 +54,8 @@ Other examples: [🎞️](assets/rht3.gif) [🎞️](assets/rht4.gif) [🎞️](
 
 ### Interval predictor implementation
 
-* Generic predictor
-* Traffic LPV
+* [Generic predictor](https://github.com/eleurent/highway-env/blob/master/highway_env/interval.py#L171)
+* [Traffic LPV system](https://github.com/eleurent/highway-env/blob/master/highway_env/vehicle/uncertainty.py#L199)
 
 ### Run a robust planner
 
