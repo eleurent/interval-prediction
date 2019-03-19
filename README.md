@@ -22,24 +22,27 @@ Conversely, the novel interval predictor has stable dynamics which enables safe 
 
 ![](assets/stuck.gif)
 
+In a right-hand traffic model, we can reasonably assume that vehicles tend to return to the rightmost way, but won't switch to the left lane for no reason (e.g. a slow obstacle in front). When incorporating this assumption in the interval predictor, the resulting robust policy won't pass a leading vehicle on the right, and can only overtake from the left.
+
 ![](assets/overtake.gif)
 
-In a right-hand traffic model, we can reasonably assume that vehicles tend to return to the rightmost way, but won't switch to the left lane for no reason (e.g. a slow obstacle in front). When incorporating this assumption in the interval predictor, the resulting robust policy can only overtake a leading vehicle by its left, and won't pass it by its right.
 This behaviour is consistent with the traffic rules and emerges from safe decision-making under uncertainty, instead of being enforced explicitely through a specific penalty in the objective function.
 
 ### Dense Traffic
 
-In these simulations, several traffic participants are interacting with each other.
-
 ![](assets/traf1.gif)
+
+In these simulations, several traffic participants are interacting with each other. The interval predictor scales linearly to large systems and time-horizons.
 
 ![](assets/traf2.gif)
 
 Other examples: [🎞️](assets/traf3.gif) [🎞️](assets/traf4.gif)
 
-### Right-Hand Dense Traffic
+### Dense Right-Hand Traffic
 
 ![](assets/rht1.gif)
+
+Contrary to the previous dense traffic simulation, with the right-hand traffic modeling assumption the ego-vehicle never passes other vehicles on the right.
 
 ![](assets/rht2.gif)
 
