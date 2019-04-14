@@ -25,14 +25,7 @@
 \usepackage{empheq}
 \usepackage{hyperref}
 
-% Subcaption must be wrapped, in IEEEtan class
-\makeatletter
-\let\MYcaption\@makecaption
-\makeatother
-\usepackage[font=footnotesize]{subcaption}
-\makeatletter
-\let\@makecaption\MYcaption
-\makeatother
+\usepackage[caption=false]{subfig}
 
 \usepackage{svg}
 
@@ -204,7 +197,7 @@ And assume that
 then the system trajectories corresponding to $x(0)=\overline{x}_{0}$ are shown in Fig. \ref{fig:IntFreq} by green curves. The upper $\overline{x}(t)$ and the lower $\underline{x}(t)$ estimates are depicted in Fig. \ref{fig:IntFreq} by blue and red curves, respectively. Taking $\tau=-\frac{4}{\min_{i=\overline{1,n}}\lambda_{i}(A)}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. 
 \begin{figure}
 \begin{centering}
-\includegraphics[width=7cm]{IntFreq}
+\includegraphics[width=7cm]{IntFreq-eps-converted-to}
 \par\end{centering}
 \caption{\label{fig:IntFreq} The results of prediction for different values
 of the frequency}
@@ -266,7 +259,7 @@ In Fig. \ref{fig:IP_Direct}, the results of simulation are shown for the origina
 \begin{figure}
 \begin{centering}
 %\includegraphics[width=7cm]{IP_Direct}
-\includesvg[width=\linewidth]{observer}
+\includegraphics[width=\linewidth]{observer}
 \par\end{centering}
 \caption{\label{fig:IP_Direct} The results of prediction by \eqref{eq:IP_direct}}
 \end{figure}
@@ -468,8 +461,7 @@ to the motivation example:
 where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}-\underline{\theta}$, $\Delta A_{-}=0$ and all conditions of Theorem \ref{thm:main} are verified. In Fig.~\ref{fig:IP_New}, the results of simulation are shown for the original system (blue curves) as previously and for the interval predictor (the red dashed curves represent $\underline{x}(t)$ and $\overline{x}(t)$). As we can see the new predictor generates very reasonable and bounded estimates. 
 \begin{figure}
 \begin{centering}
-%\includegraphics[width=7cm]{IP_New}
-\includesvg[width=\linewidth]{predictor}
+\includegraphics[width=\linewidth]{predictor}
 \par\end{centering}
 \caption{\label{fig:IP_New} The results of prediction by \eqref{eq:IP_main}}
 \end{figure}
@@ -601,30 +593,29 @@ We use lemmas \ref{lem:l2} and \ref{lem:l3} to compute a similarity transformati
 \subsection{Results}
 
 \begin{figure}[htp]
-    \begin{subfigure}[b]{0.49\textwidth}
+    \subfloat[The naive predictor \eqref{eq:IP_direct} quickly diverges]{
     \centering
-      \includegraphics[width=\linewidth]{driving_observer.png}
-      \caption{The naive predictor \eqref{eq:IP_direct} quickly diverges}
+      \includegraphics[width=0.49\textwidth]{driving_observer.png}
       \label{sub:hw-a}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
+    }
+    \newline
+     \subfloat[The proposed predictor \eqref{eq:IP_main} remains stable]{
     \centering
-      \includegraphics[width=\linewidth]{driving_predictor.png}
-      \caption{The proposed predictor \eqref{eq:IP_main} remains stable}
+      \includegraphics[width=0.49\textwidth]{driving_predictor.png}
       \label{sub:hw-b}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
+}
+\newline
+    \subfloat[Prediction during a lane change maneuver]{
     \centering
-      \includegraphics[width=\linewidth]{lane_change_predictor.png}
-      \caption{Prediction during a lane change maneuver}
+      \includegraphics[width=0.49\textwidth]{lane_change_predictor.png}
       \label{sub:hw-c}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
+}
+\newline
+    \subfloat[Prediction with uncertainty in the followed lane $L_i$]{
     \centering
-      \includegraphics[width=\linewidth]{overtake.png}
-      \caption{Prediction with uncertainty in the followed lane $L_i$ }
+      \includegraphics[width=0.49\textwidth]{overtake.png}
       \label{sub:hw-d}
-    \end{subfigure}
+}
     \caption{State intervals obtained by the two methods in different conditions.}
     \label{fig:highway}
 \end{figure}
