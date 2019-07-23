@@ -187,13 +187,12 @@ where $x(t)\in\R$ with $x(0)\in[\underline{x}_{0},\overline{x}_{0}]=[1.0, 1.1]$,
 \dot{\underline{x}}(t) & = & -\overline{\theta}\overline{x}^{+}(t)+\underline{\theta}\overline{x}^{-}(t)+\underline{d},\\
 \dot{\overline{x}}(t) & = & -\underline{\theta}\underline{x}^{+}(t)+\overline{\theta}\underline{x}^{-}(t)+\overline{d}.
 \end{eqnarray*}
-In Fig. \ref{fig:IP_Direct}, the results of simulation are shown for the original system (blue curves) and for the interval predictor (red dashed curves). As we can conclude even in such a simplistic setup the predictor \eqref{eq:IP_direct} can be unstable, and an additional consideration and design are needed to properly solve the posed problem. 
+The results of simulation are shown in Fig. \ref{fig:IP_Direct}. As we can conclude, additional consideration and design are needed to properly solve the posed problem.
 \begin{figure}
 \begin{centering}
-%\includegraphics[width=7cm]{IP_Direct}
 \includegraphics[width=\linewidth]{observer}
 \par\end{centering}
-\caption{\label{fig:IP_Direct} The results of prediction by \eqref{eq:IP_direct}}
+\caption{\label{fig:IP_Direct} The results of prediction by \eqref{eq:IP_direct}: even in such a simplistic setting, the predictor is unstable and diverges quickly.}
 \end{figure}
 \end{example*}
 
@@ -390,12 +389,12 @@ to the motivation example:
 \dot{\underline{x}}(t) & = & -\overline{\theta}\underline{x}(t)-(\overline{\theta}-\underline{\theta})\underline{x}^{-}(t)+\underline{d},\\
 \dot{\overline{x}}(t) & = & -\overline{\theta}\overline{x}(t)+(\overline{\theta}-\underline{\theta})\overline{x}^{+}(t)+\overline{d},
 \end{eqnarray*}
-where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}-\underline{\theta}$, $\Delta A_{-}=0$ and all conditions of Theorem \ref{thm:main} are verified. In Fig.~\ref{fig:IP_New}, the results of simulation are shown for the original system (blue curves) as previously and for the interval predictor (the red dashed curves represent $\underline{x}(t)$ and $\overline{x}(t)$). As we can see the new predictor generates very reasonable and bounded estimates. 
+where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}-\underline{\theta}$, $\Delta A_{-}=0$ and all conditions of Theorem \ref{thm:main} are verified. The results of simulation are shown in Fig.~\ref{fig:IP_New}. As we can see the new predictor generates very reasonable and bounded estimates. 
 \begin{figure}
 \begin{centering}
 \includegraphics[width=\linewidth]{predictor}
 \par\end{centering}
-\caption{\label{fig:IP_New} The results of prediction by \eqref{eq:IP_main}}
+\caption{\label{fig:IP_New} The results of prediction by \eqref{eq:IP_main}: the new predictor is stable and produces tight bounds.}
 \end{figure}
 \end{example*}
 
