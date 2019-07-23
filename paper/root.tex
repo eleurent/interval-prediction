@@ -24,10 +24,9 @@
 \usepackage{blkarray}
 \usepackage{empheq}
 \usepackage{hyperref}
-
 \usepackage[caption=false]{subfig}
-
 \usepackage{svg}
+\usepackage{comment}
 
 \graphicspath{{img/}}
 
@@ -76,17 +75,16 @@ An interval predictor/observer is also proposed with improved accuracy for the c
 
 \section{Introduction}
 
-There are plenty of emerging application domains nowadays, where the decision algorithms have to operate in the conditions of a severe uncertainty. To mention a few: the systems biology and control of bioreactors (where it is hard to establish detailed models and it is impossible to isolate and evaluate most of the external to the plant perturbations) and the path planning for self-driving cars (where despite of a large parametric variation of the models, the presence of humans in the loop introduces a lot of imprecision due to their spontaneous reactions). Therefore, the decision procedures need more information, then the estimation, identification and prediction algorithms come to the attention. In most of these applications, even the nominal simplified models are nonlinear, and in order to solve the problem of estimation and control in nonlinear and uncertain systems, a popular approach is based on the LPV representation of their dynamics \cite{Shamma2012,Marcos_Balas04,Shamma_Cloutier93,Tan97}, since it allows to reduce the problem to the linear context at the price of augmented parametric variation.
+There are plenty of emerging application domains nowadays, where the decision algorithms have to operate in the conditions of a severe uncertainty. To mention a few: the systems biology and control of bioreactors (where it is hard to establish detailed models and it is impossible to isolate and evaluate most of the external to the plant perturbations) and the path planning for self-driving cars (where despite of a large parametric variation of the models, the presence of humans in the loop introduces a lot of imprecision due to their spontaneous reactions). Therefore, the decision procedures need more information, then the estimation, identification and prediction algorithms come to the attention. In most of these applications, even the nominal simplified models are nonlinear, and in order to solve the problem of estimation and control in nonlinear and uncertain systems, a popular approach is based on the Linear Parameter-Varying (LPV) representation of their dynamics \cite{Shamma2012,Marcos_Balas04,Shamma_Cloutier93,Tan97}, since it allows to reduce the problem to the linear context at the price of augmented parametric variation.
 
 In the presence of uncertainty (unknown parameters or/and external disturbances) the design of a conventional estimator or predictor, approaching the ideal value of the state, can be realized under restrictive assumptions only. However, an interval estimation/prediction remains frequently feasible: using input-output information an algorithm evaluates the set of admissible values (interval) for the state at each instant of time \cite{Efimov2016,Raiessi2018}. The interval length must be minimized via a parametric tuning of the system, and it is typically proportional to the size of the model uncertainty \cite{Chebotarev2015}. It is worth stressing that the interval estimation or prediction is not a relaxation of the original problem, in fact it is an improvement since the interval mean value can be used as the state pointwise estimate, while the interval bounds provide a simultaneous accuracy evaluation for given uncertainty.
 
 There are many approaches to design interval/set-membership estimators and predictors \cite{Jaulin02,Kieffer_Walter04,Bernard_Gouze04,Moisan_Bernard_Gouze09}, and this paper focuses on the design based on the monotone systems theory \cite{Bernard_Gouze04,Moisan_Bernard_Gouze09,RVZ10,REZ11,Efimov_a2012}.
 In such a way the main difficulty for synthesis consists in ensuring cooperativity of the interval error dynamics by a proper design of the algorithm. As it has been shown in \cite{MazencBernard11,REZ11,Combastel2012}, such a complexity of the design can be handled by applying an additional transformation of coordinates, which maps a stable system into a stable and monotone one. An approach for selection of a constant similarity transformation matrix representing a given interval of matrices to an interval of Metzler matrices (providing monotonicity) has been developed in \cite{Efimov_a2013,Chebotarev2015}. 
 
-The objective of this paper is to propose an interval predictor for linear time-invariant (LTI) and LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. In other words, an important problem is to keep the interval predictor stability in the presence of uncertainties and saving the interval inclusion property of the estimates, then an unstable system can definitely enclose the trajectories of a stable one, but at the price of the precision. To solve this problem, first, we are going to revisit the case of LTI models and demonstrate an accuracy improvement that can be achieved if an additional information about external signals are given: the admissible interval of frequency spectrum. Second, a generic predictor is proposed for an LPV system, whose estimates can be combined with the interval frequency based estimator presented earlier. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Finally, the utility of the developed theory is demonstrated on the problem of path planning for a self-driving car by making comparison with earlier results from
-\cite{Leurent2018}.
+The objective of this paper is to propose an interval predictor for linear time-invariant (LTI) and LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. In other words, an important problem is to keep the interval predictor stability in the presence of uncertainties and saving the interval inclusion property of the estimates, then an unstable system can definitely enclose the trajectories of a stable one, but at the price of the precision. To solve this problem, first, a generic predictor is proposed for an LPV system, whose estimates can be combined with the interval frequency based estimator presented earlier. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Second, we revisit the case of LTI models and demonstrate an accuracy improvement that can be achieved if an additional information about external signals are given: the admissible interval of frequency spectrum. Finally, the utility of the developed theory is demonstrated on the problem of path planning for a self-driving car by making comparison with earlier results from \cite{Leurent2018}.
 
-The paper is organized as follows. An introduction to the theory of interval estimation for LTI systems is given in Section \ref{sec:Preliminaries}, together with the novel interval frequency based estimator. The problem statement and a motivating example are introduced in Section \ref{sec:Problem-statement}. An improved interval predictor is presented in Section \ref{sec:Main-results}. Application of the developed theory to the problem of path planning for an autonomous vehicle is shown in Section \ref{sec:Examples}.
+The paper is organized as follows. An introduction to the theory of interval estimation for LTI systems is given in Section \ref{sec:Preliminaries}. The problem statement and a motivating example are introduced in Section \ref{sec:Problem-statement}. An improved interval predictor is presented in Section \ref{sec:Main-results}. The asymptotic accuracy is enhanced using frequency based estimation in Section \ref{sec:Frequency}. Application of the developed theory to the problem of path planning for an autonomous vehicle is shown in Section \ref{sec:Examples}.
 
 \section{\label{sec:Preliminaries} Preliminaries}
 
@@ -137,72 +135,6 @@ This result allows to represent the system \eqref{eq:LTI_syst} in its nonnegativ
 \label{lem:l3}\textup{\cite{Efimov_a2013}} Let $D\in\Xi\subset\R^{n\times n}$ be a matrix variable satisfying the interval constraints $\Xi=\{D\in\R^{n\times n}:\,D_{a}-\Delta\le D\le D_{a}+\Delta\}$ for some $D_{a}^{\text{T}}=D_{a}\in\R^{n\times n}$ and $\Delta\in\R_{+}^{n\times n}$. If for some constant $\mu\in\R_{+}$ and a diagonal matrix $\Upsilon\in\R^{n\times n}$ the Metzler matrix $Y=\mu E_{n\times n}-\Upsilon$ has the same eigenvalues as the matrix $D_{a}$, then there is an orthogonal matrix $S\in\R^{n\times n}$ such that the matrices $S^{\text{T}}DS$ are Metzler for all $D\in\Xi$ provided that $\mu>n||\Delta||_{max}$.\textup{ }
 \end{lem}
 In the last lemma, the existence of similarity transformation is proven for an interval of matrices, \emph{e.g}. in the case of LPV dynamics.
-
-\subsection{Frequency based interval estimation}
-
-Assume that there exist two signals $\underline{\omega},\overline{\omega}:\R_{+}\to\R^{q}$ and two vectors $\underline{x}_{0},\overline{x}_{0}\in\R^{n}$ such that
-\begin{gather*}
-\underline{\omega}(t)\leq\omega(t)\leq\overline{\omega}(t),\quad\forall t\geq0,\\
-\underline{x}_{0}\leq x(0)\leq\overline{x}_{0},
-\end{gather*} and there is a matrix $L\in\R^{n\times p}$ such that $A-LC$ is Hurwitz and Metzler, then an interval observer for the system \eqref{eq:LTI_syst} can be written as follows \cite{REZ11}:
-\begin{eqnarray}
-\dot{\underline{x}}(t) & = & (A-LC)\underline{x}(t)+Ly(t)\nonumber \\
- &  & +(B-LD)^{+}\underline{\omega}(t)-(B-LD)^{-}\overline{\omega}(t),\nonumber \\
-\dot{\overline{x}}(t) & = & (A-LC)\overline{x}(t)+Ly(t)\label{eq:IO_LTI}\\
- &  & +(B-LD)^{+}\overline{\omega}(t)-(B-LD)^{-}\underline{\omega}(t),\nonumber \\
- &  & \underline{x}(0)=\underline{x}_{0},\;\overline{x}(0)=\overline{x}_{0},\nonumber 
-\end{eqnarray}
-guaranteeing the desired interval relations:
-\[
-\underline{x}(t)\leq x(t)\leq\overline{x}(t),\quad\forall t\geq0.
-\]
-This solution uses only information about amplitude of the external input $\omega$, and its precision can be largely improved if we assume that there is also information about admissible frequency spectrum in $\omega$:
-\begin{lem}
-\label{lem:IntFreq} Let there exist $s_{1},s_{2}\in\N_{+}$ and $T,W>0$
-such that
-\[
-\omega(t)=a_{0}+\sum_{s=s_{1}}^{s_{2}}a_{s}\sin\left(\frac{2\pi s}{T}t+\phi_{s}\right),
-\]
-for some $a_{0},a_{s},\phi_{s}\in\R$ with $s=\overline{s_{1},s_{2}}$ and $||\omega||\leq W$. Then for any $x(0)\in\R^{n}$ in \eqref{eq:LTI_syst} and any $\epsilon>0$ there exists $\tau>0$ such that:
-\[
-|x_{i}(t)|\leq\sup_{w\in[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]}|e_{i}(jwI_{n}-A)^{-1}BE_{q}|W+\epsilon\quad\forall t\geq\tau,
-\]
-where $j$ corresponds to the imaginary unit, provided that the matrix $A$ is Hurwitz.
-\end{lem}
-\begin{proof}
-The solution of the system \eqref{eq:LTI_syst} can be written as follows:
-\[
-x(t)=e^{At}x(0)+\int_{0}^{t}e^{A(t-\sigma)}B\omega(\sigma)d\sigma,
-\]
-where the first term ($e^{At}x(0)$) is converging asymptotically to zero since the matrix $A$ is Hurwitz by hypothesis. And in order to estimate the second term, the Bode magnitude plot can be used, which provides the asymptotic amplitude of the state for the given frequency input. Under the introduced hypotheses, the frequency of the input lies in the interval $[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]$ and the amplitude is upper-bounded by $W$, then there exist constants $\tau>0$ and $\epsilon>0$, related with $x(0)$, such that the claim of the lemma is true.
-\end{proof}
-The interval observer \eqref{eq:IO_LTI}, if we assume that $\overline{\omega}(t)=-\underline{\omega}(t)=WE_{q}$ and $L=0$, asymptotically will converge to the interval $[-|e_{i}A{}^{-1}BE_{q}|W,|e_{i}A{}^{-1}BE_{q}|W]$ (that corresponds to the result of Lemma \ref{lem:IntFreq} with $s_{1}=s_{2}=0$), which is the estimate from Bode plot given for the frequency $0$, and it is a well-known fact that for many stable systems the Bode magnitude plot is a decreasing function of the frequency. Therefore, if the information about frequency spectrum is known and it is separated from zero, then the asymptotic interval accuracy can be significantly improved. Of course, Lemma \ref{lem:IntFreq} can be applied iteratively for a decreasing sequence of $\epsilon>0$ and an increasing one in $\tau>0$.
-\begin{example*}
-Let us illustrate these conclusions on a simple example:
-\begin{gather*}
-A=\left[\begin{array}{cc}
--1 & 1\\
-0.1 & -1
-\end{array}\right],\;B=\left[\begin{array}{c}
--2\\
-1
-\end{array}\right],\;L=0,\\
-\overline{\omega}(t)=-\underline{\omega}(t)=W=1,\\
-\overline{x}_{0}=[2\;1]\tr,\;\underline{x}_{0}=[-1\;-2]\tr.
-\end{gather*}
-And assume that
-\[
-\omega(t)=W\sin(st),\;s=7,
-\]
-then the system trajectories corresponding to $x(0)=\overline{x}_{0}$ are shown in Fig. \ref{fig:IntFreq} by green curves. The upper $\overline{x}(t)$ and the lower $\underline{x}(t)$ estimates are depicted in Fig. \ref{fig:IntFreq} by blue and red curves, respectively. Taking $\tau=-\frac{4}{\min_{i=\overline{1,n}}\lambda_{i}(A)}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. 
-\begin{figure}
-\begin{centering}
-\includegraphics[width=7cm]{IntFreq-eps-converted-to}
-\par\end{centering}
-\caption{\label{fig:IntFreq} The results of prediction for different values
-of the frequency}
-\end{figure}
-\end{example*}
 
 \section{\label{sec:Problem-statement} Problem statement}
 
@@ -464,6 +396,73 @@ where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}
 \includegraphics[width=\linewidth]{predictor}
 \par\end{centering}
 \caption{\label{fig:IP_New} The results of prediction by \eqref{eq:IP_main}}
+\end{figure}
+\end{example*}
+
+\section{Frequency based interval estimation}
+\label{sec:Frequency}
+
+Assume that there exist two signals $\underline{\omega},\overline{\omega}:\R_{+}\to\R^{q}$ and two vectors $\underline{x}_{0},\overline{x}_{0}\in\R^{n}$ such that
+\begin{gather*}
+\underline{\omega}(t)\leq\omega(t)\leq\overline{\omega}(t),\quad\forall t\geq0,\\
+\underline{x}_{0}\leq x(0)\leq\overline{x}_{0},
+\end{gather*} and there is a matrix $L\in\R^{n\times p}$ such that $A-LC$ is Hurwitz and Metzler, then an interval observer for the system \eqref{eq:LTI_syst} can be written as follows \cite{REZ11}:
+\begin{eqnarray}
+\dot{\underline{x}}(t) & = & (A-LC)\underline{x}(t)+Ly(t)\nonumber \\
+ &  & +(B-LD)^{+}\underline{\omega}(t)-(B-LD)^{-}\overline{\omega}(t),\nonumber \\
+\dot{\overline{x}}(t) & = & (A-LC)\overline{x}(t)+Ly(t)\label{eq:IO_LTI}\\
+ &  & +(B-LD)^{+}\overline{\omega}(t)-(B-LD)^{-}\underline{\omega}(t),\nonumber \\
+ &  & \underline{x}(0)=\underline{x}_{0},\;\overline{x}(0)=\overline{x}_{0},\nonumber 
+\end{eqnarray}
+guaranteeing the desired interval relations:
+\[
+\underline{x}(t)\leq x(t)\leq\overline{x}(t),\quad\forall t\geq0.
+\]
+This solution uses only information about amplitude of the external input $\omega$, and its precision can be largely improved if we assume that there is also information about admissible frequency spectrum in $\omega$:
+\begin{lem}
+\label{lem:IntFreq} Let there exist $s_{1},s_{2}\in\N_{+}$ and $T,W>0$
+such that
+\[
+\omega(t)=a_{0}+\sum_{s=s_{1}}^{s_{2}}a_{s}\sin\left(\frac{2\pi s}{T}t+\phi_{s}\right),
+\]
+for some $a_{0},a_{s},\phi_{s}\in\R$ with $s=\overline{s_{1},s_{2}}$ and $||\omega||\leq W$. Then for any $x(0)\in\R^{n}$ in \eqref{eq:LTI_syst} and any $\epsilon>0$ there exists $\tau>0$ such that:
+\[
+|x_{i}(t)|\leq\sup_{w\in[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]}|e_{i}(jwI_{n}-A)^{-1}BE_{q}|W+\epsilon\quad\forall t\geq\tau,
+\]
+where $j$ corresponds to the imaginary unit, provided that the matrix $A$ is Hurwitz.
+\end{lem}
+\begin{proof}
+The solution of the system \eqref{eq:LTI_syst} can be written as follows:
+\[
+x(t)=e^{At}x(0)+\int_{0}^{t}e^{A(t-\sigma)}B\omega(\sigma)d\sigma,
+\]
+where the first term ($e^{At}x(0)$) is converging asymptotically to zero since the matrix $A$ is Hurwitz by hypothesis. And in order to estimate the second term, the Bode magnitude plot can be used, which provides the asymptotic amplitude of the state for the given frequency input. Under the introduced hypotheses, the frequency of the input lies in the interval $[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]$ and the amplitude is upper-bounded by $W$, then there exist constants $\tau>0$ and $\epsilon>0$, related with $x(0)$, such that the claim of the lemma is true.
+\end{proof}
+The interval observer \eqref{eq:IO_LTI}, if we assume that $\overline{\omega}(t)=-\underline{\omega}(t)=WE_{q}$ and $L=0$, asymptotically will converge to the interval $[-|e_{i}A{}^{-1}BE_{q}|W,|e_{i}A{}^{-1}BE_{q}|W]$ (that corresponds to the result of Lemma \ref{lem:IntFreq} with $s_{1}=s_{2}=0$), which is the estimate from Bode plot given for the frequency $0$, and it is a well-known fact that for many stable systems the Bode magnitude plot is a decreasing function of the frequency. Therefore, if the information about frequency spectrum is known and it is separated from zero, then the asymptotic interval accuracy can be significantly improved. Of course, Lemma \ref{lem:IntFreq} can be applied iteratively for a decreasing sequence of $\epsilon>0$ and an increasing one in $\tau>0$.
+\begin{example*}
+Let us illustrate these conclusions on a simple example:
+\begin{gather*}
+A=\left[\begin{array}{cc}
+-1 & 1\\
+0.1 & -1
+\end{array}\right],\;B=\left[\begin{array}{c}
+-2\\
+1
+\end{array}\right],\;L=0,\\
+\overline{\omega}(t)=-\underline{\omega}(t)=W=1,\\
+\overline{x}_{0}=[2\;1]\tr,\;\underline{x}_{0}=[-1\;-2]\tr.
+\end{gather*}
+And assume that
+\[
+\omega(t)=W\sin(st),\;s=7,
+\]
+then the system trajectories corresponding to $x(0)=\overline{x}_{0}$ are shown in Fig. \ref{fig:IntFreq} by green curves. The upper $\overline{x}(t)$ and the lower $\underline{x}(t)$ estimates are depicted in Fig. \ref{fig:IntFreq} by blue and red curves, respectively. Taking $\tau=-\frac{4}{\min_{i=\overline{1,n}}\lambda_{i}(A)}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. 
+\begin{figure}
+\begin{centering}
+\includegraphics[width=7cm]{IntFreq-eps-converted-to}
+\par\end{centering}
+\caption{\label{fig:IntFreq} The results of prediction for different values
+of the frequency}
 \end{figure}
 \end{example*}
 
