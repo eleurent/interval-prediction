@@ -9,29 +9,30 @@ rc('text', usetex=True)
 import seaborn as sns
 
 from interval import time
-from problems import DoubleIntegrator, LoneVehicle, Integrator, UniVehicle
+from problems import DoubleIntegrator, LoneVehicle, Integrator, UniVehicle, Example
 
 
 def main(trajectories=False,
          full_interval=False):
 
-    sys = Integrator()
+    # sys = Integrator()
     # sys = DoubleIntegrator()
+    sys = Example()
     # sys = LoneVehicle()
     # sys = UniVehicle()
 
     palette = itertools.cycle(sns.color_palette())
-    fig, axes = plt.subplots(sys.x0.size, 1, sharex=True, squeeze=False, figsize=(8, 4))
+    fig, axes = plt.subplots(sys.x0.size, 1, sharex=True, squeeze=False, figsize=(8, 4*sys.x0.size))
     # Trajectories
     if trajectories:
-        sys_mesh = sys.mesh(100)
+        sys_mesh = sys.mesh(1)
         t_color = next(palette)
         for i in range(sys.x0.size):
-            axes[i, 0].plot(time, sys.trajectory(sys.mesh(1))[:, i],
+            axes[i, 0].plot(time, sys.trajectory(sys_mesh[0])[:, i],
                             color=t_color,
                             alpha=0.5,
                             label=r"$x(t)$")
-        for mesh_point in sys_mesh:
+        for mesh_point in sys_mesh[1:]:
             for i in range(sys.x0.size):
                 axes[i, 0].plot(time, sys.trajectory(mesh_point)[:, i],
                                 color=t_color,
@@ -40,12 +41,13 @@ def main(trajectories=False,
     # Full interval
     next(palette)
     next(palette)
+    color = next(palette)
     if full_interval:
         for i in range(sys.x0.size):
             axes[i, 0].plot(time, sys.interval_trajectory(predictor=True)[:, :, i],
                             linestyle="dashed",
                             linewidth=2,
-                            color=next(palette),
+                            color=color,
                             label=r"$\underline{x}(t), \overline{x}(t)$")
 
     # Display
@@ -57,7 +59,7 @@ def main(trajectories=False,
                           loc='best', prop={'size': 22})
 
         # axes[i, 0].set_ylabel(r'$x(t)$'.format(i), fontsize=22)
-        axes[i, 0].set_ylim([-0.2, 1.2])
+        axes[i, 0].set_ylim([-5, 5])
         axes[i, 0].set_xlim([time[0], time[-1]])
         axes[i, 0].grid(True)
         for tick in axes[i, 0].xaxis.get_major_ticks():

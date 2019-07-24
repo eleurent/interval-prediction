@@ -20,6 +20,17 @@ class DoubleIntegrator(LP):
         super().__init__(x0, A0, dAs, center=center)
 
 
+class Example(LP):
+    def __init__(self, x0=[2, 1]):
+        A = [[-1, 1], [0.1, -1]]
+        B = [[-2], [1]]
+        dAs = [0*np.array(A)]
+        x_i = [[-1, -2], [2, 1]]
+        d_i = [[-1], [1]]
+        d = lambda t: [1*np.sin(7*t)]
+        super().__init__(x0, A, dAs, B=B, d=d, d_i=d_i, x_i=x_i)
+
+
 class UniVehicle(LP):
     def __init__(self, x0=[0, 5, 3, 1]):
         self.params = np.array([[5, 5.1], [3, 3.1]])

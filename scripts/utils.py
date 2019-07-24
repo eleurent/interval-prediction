@@ -5,7 +5,7 @@ n = lambda x: np.maximum(-x, 0)
 
 
 def is_metzler(matrix):
-    return (matrix - np.diagonal(matrix) < 0).any()
+    return (matrix - np.diagonal(matrix) >= 0).all()
 
 
 def interval_minus(a):

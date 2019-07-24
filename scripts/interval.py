@@ -4,23 +4,25 @@ import numpy as np
 from utils import p, n, intervals_product, mesh_box, is_metzler
 
 dt = 0.01
-time = np.arange(0, 6, dt)
+time = np.arange(0, 7, dt)
 
 
 class LP(object):
-    def __init__(self, x0, A0, dAs, d_i=None, center=None, x_i=None):
+    def __init__(self, x0, A0, dAs, B=None, d_i=None, center=None, x_i=None, d=None):
         self.x0 = np.array(x0, dtype=float)
         self.A0 = np.array(A0, dtype=float)
         self.dAs = [np.array(dAi) for dAi in dAs]
         self.x_i = np.array(x_i) if x_i is not None else None
         self.d_i = np.array(d_i) if d_i is not None else np.zeros((2, *self.x0.shape))
+        self.B = np.array(B)
+        self.d = d
         self.center = np.array(center) if center is not None else np.zeros(self.x0.shape)
         self.coordinates = None
 
     def update_coordinates_frame(self, A0):
         self.coordinates = None
         # Rotation
-        if is_metzler(A0):
+        if not is_metzler(A0):
             v, P = np.linalg.eig(A0)
             if np.isreal(v).all():
                 self.coordinates = (P, np.linalg.inv(P))
@@ -54,28 +56,32 @@ class LP(object):
                 return P_inv @ (value - offset * self.center)
 
     def step(self, args, x):
-        A, d = args
-        dx = A @ x + d
+        A, B, d = args
+        dx = A @ x + B @ d
         return x + dx * dt
 
     def trajectory(self, args):
-        t = np.random.rand()
-        x = np.array(t*self.x_i[0] + (1-t)*self.x_i[1])
+        # t = np.random.rand()
+        # x = np.array(t*self.x_i[0] + (1-t)*self.x_i[1])
+        x = np.array(self.x0)
         xx = np.zeros((np.size(time), np.size(x)))
 
         t = np.random.rand()
-        d = np.array(t*self.d_i[0] + (1-t)*self.d_i[1])
+        # d = np.array(t*self.d_i[0] + (1-t)*self.d_i[1])
+
 
         # Forward coordinates change
         A = args
         self.update_coordinates_frame(A)
-        A = self.change_coordinates(A, matrix=True)
-        d = self.change_coordinates(d, offset=False)
         x = self.change_coordinates(x)
+        A = self.change_coordinates(A, matrix=True)
+        B = self.change_coordinates(self.B, matrix=False) if self.B is not None else 0
 
         for i in range(np.size(time)):
+            d = np.array(self.d(time[i])) if self.d is not None else 0
+            d = self.change_coordinates(d, offset=False)
             xx[i] = x
-            x = self.step((A, d), x)
+            x = self.step((A, B, d), x)
 
         # Backward coordinates change
         xx = self.change_coordinates(xx, back=True)
@@ -91,9 +97,12 @@ class LP(object):
         A0, dAs, d_i = args
         dAp = sum(p(dAi) for dAi in dAs)
         dAn = sum(n(dAi) for dAi in dAs)
+        Bp = p(self.B)
+        Bn = n(self.B)
         x_m, x_M = x_i[0, :, np.newaxis], x_i[1, :, np.newaxis]
-        dx_m = A0 @ x_m - dAp @ n(x_m) - dAn @ p(x_M) + d_i[0]
-        dx_M = A0 @ x_M + dAp @ p(x_M) + dAn @ n(x_m) + d_i[1]
+        d_m, d_M = d_i[0, :, np.newaxis], d_i[1, :, np.newaxis]
+        dx_m = A0 @ x_m - dAp @ n(x_m) - dAn @ p(x_M) + Bp @ d_m - Bn @ d_M
+        dx_M = A0 @ x_M + dAp @ p(x_M) + dAn @ n(x_m) + Bp @ d_M - Bn @ d_m
         dx_i = np.array([dx_m.squeeze(axis=-1), dx_M.squeeze(axis=-1)])
         return x_i + dx_i*dt
 
@@ -124,6 +133,8 @@ class LP(object):
 
     def mesh(self, n):
         vertices = [self.A0 + dAi for dAi in self.dAs]
+        if len(vertices) == 1:
+            return vertices
         if len(vertices) == 2:
             return [(1-t) * vertices[0] + t*vertices[1] for t in np.linspace(0, 1, n)]
         for _ in range(2):
