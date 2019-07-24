@@ -169,6 +169,14 @@ class LP(object):
         dAs = list({dAi.tostring(): dAi for dAi in dAs}.values())
         return A0, dAs
 
+    @property
+    def tau(self):
+        return -4/np.min(np.linalg.eigvals(self.A0))
+
+    def asymptotic_bound(self, frequency, eps=0.05):
+        return np.absolute(np.linalg.inv(1j*frequency*np.eye(self.A0.shape[0]) - self.A0) @ np.squeeze(self.B)) \
+               * np.max(self.d_i) + eps
+
 
 class LPV(LP):
     def trajectory(self, args):
