@@ -1,13 +1,21 @@
-\documentclass[twocolumn,english]{IEEEtran}
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}
+
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage{amsmath}
-\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{graphicx}
 
+
+\let\proof\relax
+\let\endproof\relax
+\let\example\relax
+\let\endexample\relax
+\usepackage{amsthm}
+
+
 \makeatletter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
   \theoremstyle{plain}
   \newtheorem{lem}{\protect\lemmaname}
   \theoremstyle{definition}
@@ -47,23 +55,20 @@
 \global\long\def\L{\mathcal{L}}
 \global\long\def\K{\mathcal{K}}
 
-\title{Interval Prediction for Continuous-Time Systems with Parametric Uncertainties}
+\title{\LARGE \bf
+Interval Prediction for Continuous-Time Systems with Parametric Uncertainties}
 
-\author{Edouard Leurent, Denis Efimov, Tarek Ra\"issi, Wilfrid Perruquetti\thanks{Edouard Leurent is with Renault, France. 
-
-Denis Efimov is with Inria, Univ. Lille, CNRS, UMR 9189 - CRIStAL,
-F-59000 Lille, France and with ITMO University, 197101 Saint Petersburg,
-Russia. 
-
-Tarek Ra\"issi is with Conservatoire National des Arts et M\'etiers
-(CNAM), Cedric 292, Rue St-Martin, 75141 Paris, France. 
-
-Wilfrid Perruquetti is with Centrale Lille, CNRS, UMR 9189 - CRIStAL,
-F-59000 Lille, France.
-
-This work is partially supported by the Government of Russian Federation
-(Grant 08-08) and the Ministry of Education and Science of Russian
-Federation (Project 14.Z50.31.0031).}}
+\author{Edouard Leurent, Denis Efimov, Tarek Ra\"issi, Wilfrid Perruquetti
+	\thanks{Edouard Leurent is with Renault, France.}
+	\thanks{Denis Efimov is with Inria, Univ. Lille, CNRS, UMR 9189 - CRIStAL, F-59000 Lille, France and with ITMO University, 197101 Saint Petersburg,
+Russia.}
+    \thanks{Tarek Ra\"issi is with Conservatoire National des Arts et M\'etiers (CNAM), Cedric 292, Rue St-Martin, 75141 Paris, France. }
+    \thanks{Wilfrid Perruquetti is with Centrale Lille, CNRS, UMR 9189 - CRIStAL,
+    	F-59000 Lille, France.}
+    \thanks{This work is partially supported by the Government of Russian Federation
+    	(Grant 08-08) and the Ministry of Education and Science of Russian
+    	Federation (Project 14.Z50.31.0031).}
+}
 
 \maketitle
 \thispagestyle{empty}
