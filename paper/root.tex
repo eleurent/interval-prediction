@@ -40,11 +40,10 @@
 
 \makeatother
 
-\usepackage{babel}
-  \providecommand{\assumptionname}{Assumption}
-  \providecommand{\examplename}{Example}
-  \providecommand{\lemmaname}{Lemma}
-  \providecommand{\remarkname}{Remark}
+\providecommand{\assumptionname}{Assumption}
+\providecommand{\examplename}{Example}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\remarkname}{Remark}
 \providecommand{\theoremname}{Theorem}
 
 \begin{document}
@@ -357,9 +356,9 @@ P+\min\{Z_{+},Z_{-}\}>0,\;\Gamma>0,\\
 Q+\min\{Q_{+},Q_{-}\}+2\min\{\Psi_{+},\Psi_{-}\}>0,
 \end{gather*}
 then some of them can be sign-indefinite or negative-definite ensuring the fulfillment of the last inequality:
-\[
+$
 \Upsilon\preceq0.
-\]
+$
 \end{rem}
 
 \begin{rem}
@@ -371,7 +370,8 @@ Assume that $-\underline{d}=\overline{d}=const\ne0$ and the conditions of Theore
  &  & +B^{+}\overline{d}-B^{-}\underline{d},
 \end{eqnarray*}
 which is a linear system
-\begin{eqnarray*}
+\begin{eqnarray}
+\label{eq:linear-asympt}
 \dot{X}(t) & = & \left[\begin{array}{cc}
 A_{0}-\Delta A_{+} & -\Delta A_{-}\\
 \Delta A_{-} & A_{0}+\Delta A_{+}
@@ -383,9 +383,8 @@ B^{+} & -B^{-}
 \overline{d}\\
 \underline{d}
 \end{array}\right],
-\end{eqnarray*}
+\end{eqnarray}
 where as before $X=[\underline{x}^{\top}\;\;\overline{x}^{\top}]^{\top}$.
-The domain of convergence of this linear system, and hence of \eqref{eq:IP_main}, can be tightened using the result of Lemma \ref{lem:IntFreq} under an additional hypothesis that $d(t)$ has a known and bounded frequency spectrum.
 \end{rem}
 \begin{example*}
 [motivating, continue] Let us apply the predictor \eqref{eq:IP_main}
@@ -403,9 +402,10 @@ where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}
 \end{figure}
 \end{example*}
 
+
 \section{Frequency based interval estimation}
 \label{sec:Frequency}
-
+The domain of convergence of the linear system \eqref{eq:linear-asympt}, and hence of \eqref{eq:IP_main}, can be tightened under an additional hypothesis that $d(t)$ has a known and bounded frequency spectrum.
 Assume that there exist two signals $\underline{\omega},\overline{\omega}:\R_{+}\to\R^{q}$ and two vectors $\underline{x}_{0},\overline{x}_{0}\in\R^{n}$ such that
 \begin{gather*}
 \underline{\omega}(t)\leq\omega(t)\leq\overline{\omega}(t),\quad\forall t\geq0,\\
@@ -460,7 +460,7 @@ And assume that
 \[
 \omega(t)=W\sin(st),\;s=7,
 \]
-then the system trajectories corresponding to $x(0)=\overline{x}_{0}$ are shown in Fig. \ref{fig:IntFreq} by green curves. The upper $\overline{x}(t)$ and the lower $\underline{x}(t)$ estimates are depicted in Fig. \ref{fig:IntFreq} by blue and red curves, respectively. Taking $\tau=-\frac{4}{\min_{i=\overline{1,n}}\lambda_{i}(A)}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. 
+then the system trajectory corresponding to $x(0)=\overline{x}_{0}$ are shown in Fig. \ref{fig:IntFreq}. Taking $\tau=-\frac{4}{\min_{i=\overline{1,n}}\lambda_{i}(A)}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. 
 \begin{figure}
 \begin{centering}
 \includegraphics[width=\linewidth]{asymptotic}
