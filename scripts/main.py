@@ -26,16 +26,16 @@ def main(trajectories=False,
     fig, axes = plt.subplots(sys.x0.size, 1, sharex=True, squeeze=False, figsize=(8, 4*sys.x0.size))
     # Trajectories
     if trajectories:
-        sys_mesh = sys.mesh(1)
+        sys_mesh = sys.mesh(50)
         t_color = next(palette)
         for i in range(sys.x0.size):
-            axes[i, 0].plot(time, sys.trajectory(sys_mesh[0])[:, i],
+            axes[i, 0].plot(time, sys.trajectory(sys_mesh[0], random=False)[:, i],
                             color=t_color,
                             alpha=1,
                             label=r"$x(t)$")
         for mesh_point in sys_mesh[1:]:
             for i in range(sys.x0.size):
-                axes[i, 0].plot(time, sys.trajectory(mesh_point)[:, i],
+                axes[i, 0].plot(time, sys.trajectory(mesh_point, random=True)[:, i],
                                 color=t_color,
                                 alpha=0.2)
 
@@ -53,18 +53,19 @@ def main(trajectories=False,
                             alpha=0.3)
 
             # Asymptotic enhancement
-            phase_2 = range(int(sys.tau/dt), 2*int(sys.tau/dt))
-            phase_3 = range(2*int(sys.tau/dt), np.size(time))
-            interval[phase_2, :, i] = [-sys.asymptotic_bound(0)[i], sys.asymptotic_bound(0)[i]]
-            interval[phase_3, :, i] = [-sys.asymptotic_bound(7)[i], sys.asymptotic_bound(7)[i]]
-            axes[i, 0].plot(time, interval[:, :, i],
-                            linestyle="dashed",
-                            linewidth=2,
-                            color=color,
-                            label=r"$\underline{x}(t), \overline{x}(t)$")
+            if True:
+                phase_2 = range(int(0.5*sys.tau/dt), int(1*sys.tau/dt))
+                phase_3 = range(int(1*sys.tau/dt), np.size(time))
+                interval[phase_2, :, i] = [-sys.asymptotic_bound(0)[i], sys.asymptotic_bound(0)[i]]
+                interval[phase_3, :, i] = [-sys.asymptotic_bound(7)[i], sys.asymptotic_bound(7)[i]]
+                axes[i, 0].plot(time, interval[:, :, i],
+                                linestyle="dashed",
+                                linewidth=2,
+                                color=color,
+                                label=r"$\underline{x}(t), \overline{x}(t)$")
+                plt.xticks([0, 0.5*sys.tau, sys.tau], ["0", r"$0.5\tau$", r"$\tau$"])
 
     # Display
-
     display = (0, 1)
     handles, labels = axes[0, 0].get_legend_handles_labels()
     plt.figlegend([handle for i, handle in enumerate(handles) if i in display],

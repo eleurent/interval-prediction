@@ -60,25 +60,28 @@ class LP(object):
         dx = A @ x + B @ d
         return x + dx * dt
 
-    def trajectory(self, args):
-        # t = np.random.rand()
-        # x = np.array(t*self.x_i[0] + (1-t)*self.x_i[1])
-        x = np.array(self.x0)
-        xx = np.zeros((np.size(time), np.size(x)))
-
-        t = np.random.rand()
-        # d = np.array(t*self.d_i[0] + (1-t)*self.d_i[1])
-
+    def trajectory(self, args, random=True):
+        if random:
+            t = np.random.rand()
+            x = np.array(t*self.x_i[0] + (1-t)*self.x_i[1])
+        else:
+            x = np.array(self.x0)
 
         # Forward coordinates change
+        xx = np.zeros((np.size(time), np.size(x)))
         A = args
         self.update_coordinates_frame(A)
         x = self.change_coordinates(x)
         A = self.change_coordinates(A, matrix=True)
         B = self.change_coordinates(self.B, matrix=False) if self.B is not None else 0
 
+        if random:
+            r, phi = 2*np.random.rand()-1, np.random.rand()
+        else:
+            r, phi = 1, 0
+
         for i in range(np.size(time)):
-            d = np.array(self.d(time[i])) if self.d is not None else 0
+            d = r*np.array(self.d(time[i] + phi)) if self.d is not None else 0
             d = self.change_coordinates(d, offset=False)
             xx[i] = x
             x = self.step((A, B, d), x)
@@ -134,7 +137,7 @@ class LP(object):
     def mesh(self, n):
         vertices = [self.A0 + dAi for dAi in self.dAs]
         if len(vertices) == 1:
-            return vertices
+            return [vertices[0]]*n
         if len(vertices) == 2:
             return [(1-t) * vertices[0] + t*vertices[1] for t in np.linspace(0, 1, n)]
         for _ in range(2):
@@ -171,7 +174,7 @@ class LP(object):
 
     @property
     def tau(self):
-        return -4/np.min(np.linalg.eigvals(self.A0))
+        return 4/np.min(np.abs(np.linalg.eigvals(self.A0)))
 
     def asymptotic_bound(self, frequency, eps=0.05):
         return np.absolute(np.linalg.inv(1j*frequency*np.eye(self.A0.shape[0]) - self.A0) @ np.squeeze(self.B)) \
