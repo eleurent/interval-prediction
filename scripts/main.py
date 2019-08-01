@@ -16,9 +16,9 @@ from problems import DoubleIntegrator, LoneVehicle, Integrator, UniVehicle, Exam
 def main(trajectories=False,
          full_interval=False):
 
-    # sys = Integrator()
+    sys = Integrator()
     # sys = DoubleIntegrator()
-    sys = Example()
+    # sys = Example()
     # sys = LoneVehicle()
     # sys = UniVehicle()
 
@@ -26,7 +26,7 @@ def main(trajectories=False,
     fig, axes = plt.subplots(sys.x0.size, 1, sharex=True, squeeze=False, figsize=(8, 4*sys.x0.size))
     # Trajectories
     if trajectories:
-        sys_mesh = sys.mesh(50)
+        sys_mesh = sys.mesh(100)
         t_color = next(palette)
         for i in range(sys.x0.size):
             axes[i, 0].plot(time, sys.trajectory(sys_mesh[0], random=False)[:, i],
@@ -50,10 +50,11 @@ def main(trajectories=False,
                             linestyle="dashed",
                             linewidth=2,
                             color=color,
-                            alpha=0.3)
+                            alpha=1,
+                            label=r"$\underline{x}(t), \overline{x}(t)$")
 
             # Asymptotic enhancement
-            if True:
+            if False:
                 phase_2 = range(int(0.5*sys.tau/dt), int(1*sys.tau/dt))
                 phase_3 = range(int(1*sys.tau/dt), np.size(time))
                 interval[phase_2, :, i] = [-sys.asymptotic_bound(0)[i], sys.asymptotic_bound(0)[i]]
@@ -68,14 +69,16 @@ def main(trajectories=False,
     # Display
     display = (0, 1)
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    plt.figlegend([handle for i, handle in enumerate(handles) if i in display],
-              [label for i, label in enumerate(labels) if i in display],
-              loc='upper right', prop={'size': 22})
+    leg_func = plt.figlegend if sys.x0.size > 1 else plt.legend
+    leg_func([handle for i, handle in enumerate(handles) if i in display],
+             [label for i, label in enumerate(labels) if i in display],
+             loc='upper right', prop={'size': 22})
+
 
     for i in range(sys.x0.size):
         if sys.x0.size > 1:
             axes[i, 0].set_ylabel(r'$x_{}(t)$'.format(i+1), fontsize=22)
-        # axes[i, 0].set_ylim([-5, 5])
+        axes[i, 0].set_ylim([-1, 7])
         axes[i, 0].margins(x=0, y=0.2)
         axes[i, 0].set_xlim([time[0], time[-1]])
         axes[i, 0].grid(True)

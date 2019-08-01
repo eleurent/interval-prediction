@@ -14,7 +14,7 @@ class LP(object):
         self.dAs = [np.array(dAi) for dAi in dAs]
         self.x_i = np.array(x_i) if x_i is not None else None
         self.d_i = np.array(d_i) if d_i is not None else np.zeros((2, *self.x0.shape))
-        self.B = np.array(B)
+        self.B = np.array(B) if B is not None else np.zeros((*self.x0.shape, 1))
         self.d = d
         self.center = np.array(center) if center is not None else np.zeros(self.x0.shape)
         self.coordinates = None
@@ -57,7 +57,7 @@ class LP(object):
 
     def step(self, args, x):
         A, B, d = args
-        dx = A @ x + B @ d
+        dx = A @ x +  B @ d
         return x + dx * dt
 
     def trajectory(self, args, random=True):
@@ -73,15 +73,21 @@ class LP(object):
         self.update_coordinates_frame(A)
         x = self.change_coordinates(x)
         A = self.change_coordinates(A, matrix=True)
-        B = self.change_coordinates(self.B, matrix=False) if self.B is not None else 0
+        B = self.change_coordinates(self.B, matrix=False) if self.B is not None else None
 
-        if random:
-            r, phi = 2*np.random.rand()-1, np.random.rand()
+
+        if self.d is not None:
+            if random:
+                r, phi = 2*np.random.rand()-1, np.random.rand()
+                disturbance = lambda t: r*np.array(self.d(t + phi))
+            else:
+                disturbance = self.d
         else:
-            r, phi = 1, 0
+            t = np.random.rand()
+            disturbance = lambda x: np.array(t*self.d_i[0] + (1-t)*self.d_i[1])
 
         for i in range(np.size(time)):
-            d = r*np.array(self.d(time[i] + phi)) if self.d is not None else 0
+            d = disturbance(time[i])
             d = self.change_coordinates(d, offset=False)
             xx[i] = x
             x = self.step((A, B, d), x)
@@ -93,7 +99,7 @@ class LP(object):
     def step_interval(self, x_i, args):
         A0, dAs, d_i = args
         A_i = A0 + sum(intervals_product([0, 1], [dA, dA]) for dA in dAs)
-        dx_i = intervals_product(A_i, x_i) + d_i[:, np.newaxis]
+        dx_i = intervals_product(A_i, x_i) + d_i
         return x_i + dx_i*dt
 
     def step_interval_predictor(self, x_i, args):
