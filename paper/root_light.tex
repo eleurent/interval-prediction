@@ -1,5 +1,9 @@
 \documentclass[letterpaper, 10 pt, conference]{ieeeconf}
 
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage{amsmath}
@@ -70,7 +74,6 @@ Russia.}
 }
 
 \maketitle
-\thispagestyle{empty}
 \begin{abstract}
 The problem of behaviour prediction for linear parameter-varying systems is considered in the interval framework. It is assumed that the system is subject to uncertain inputs and the vector of scheduling parameters is unmeasurable, but all uncertainties take values in a given admissible set. Then an interval predictor is designed and its stability is guaranteed applying Lyapunov function with a novel structure. The conditions of stability are formulated in the form of linear matrix inequalities. Efficiency of the theoretical results is demonstrated in the application to safe motion planning for autonomous vehicles.
 \end{abstract}
@@ -133,7 +136,7 @@ This result allows to represent the system \eqref{eq:LTI_syst} in its nonnegativ
 \begin{lem}
 \label{lem:l3}\textup{\cite{Efimov_a2013}} Let $D\in\Xi\subset\R^{n\times n}$ be a matrix variable satisfying the interval constraints $\Xi=\{D\in\R^{n\times n}:\,D_{a}-\Delta\le D\le D_{a}+\Delta\}$ for some $D_{a}^{\text{T}}=D_{a}\in\R^{n\times n}$ and $\Delta\in\R_{+}^{n\times n}$. If for some constant $\mu\in\R_{+}$ and a diagonal matrix $\Upsilon\in\R^{n\times n}$ the Metzler matrix $Y=\mu E_{n\times n}-\Upsilon$ has the same eigenvalues as the matrix $D_{a}$, then there is an orthogonal matrix $S\in\R^{n\times n}$ such that the matrices $S^{\text{T}}DS$ are Metzler for all $D\in\Xi$ provided that $\mu>n||\Delta||_{max}$.\textup{ }
 \end{lem}
-In the last lemma, the existence of similarity transformation is proven for an interval of matrices, \emph{e.g}. in the case of LPV dynamics.
+In the last lemma, the existence of similarity transformation is proven for an interval of matrices, \emph{e.g}. LPV dynamics.
 
 \section{\label{sec:Problem-statement} Problem statement}
 
@@ -141,7 +144,7 @@ Consider an LPV system:
 \begin{equation}
 \dot{x}(t)=A(\theta(t))x(t)+Bd(t),\;t\geq0,\label{eq:LPV_syst}
 \end{equation}
-where $x(t)\in\R^{n}$ is the state, $\theta(t)\in\Pi\subset\R^{r}$ is the vector of scheduling parameters with a known set of admissible values $\Pi$, $\theta\in\L_{\infty}^{r}$; the signal $d:\R_{+}\to\R^{m}$ is the external input. The values of the scheduling vector $\theta(t)$ are not available for measurements, and only the set of admissible values $\Pi$ is known. The matrix $B\in\R^{n\times m}$ is known, the matrix function $A:\Pi\to\R^{n\times n}$ is locally bounded (continuous) and also known.
+where $x(t)\in\R^{n}$ is the state, $\theta(t)\in\Pi\subset\R^{r}$ is the vector of scheduling parameters with a known set of admissible values $\Pi$, $\theta\in\L_{\infty}^{r}$; the signal $d:\R_{+}\to\R^{m}$ is the external input. The values of the scheduling vector $\theta(t)$ are not available for measurements, and only the set of admissible values $\Pi$ is known. The matrix $B\in\R^{n\times m}$ is known, the matrix function $A:\Pi\to\R^{n\times n}$ is locally bounded (continuous) and known.
 
 The following assumptions will be used in this work.
 \begin{assumption}
@@ -211,9 +214,9 @@ Therefore, it is assumed that the matrix $A(\theta)$ for any $\theta\in\Pi$ can 
 \dot{x}(t)=[A_{0}+\sum_{i=1}^{N}\lambda_{i}(\theta(t))\Delta A_{i}]x(t)+Bd(t).
 \]
 Denote
-\[
+$
 \Delta A_{+}=\sum_{i=1}^{N}\Delta A_{i}^{+},\;\Delta A_{-}=\sum_{i=1}^{N}\Delta A_{i}^{-},
-\]
+$
 then the following interval predictor can be designed:
 \begin{thm}
 \label{thm:main} Let assumptions \ref{ass:a1}\textendash \ref{ass:a3} be satisfied for the system \eqref{eq:LPV_syst}, then an interval predictor
@@ -411,7 +414,7 @@ The kinematics of any vehicle $i\in\overline{1,N}$ are represented by the Kinema
 	\dot{x}_i &= v_i\cos(\psi_i), &\dot{y}_i &= v_i\sin(\psi_i), \nonumber\\
 	\dot{v}_i &= a_i, &\dot{\psi}_i &= \frac{v_i}{l}tan(\beta_i) \nonumber
 \end{empheq}
-where $(x_i, y_i)$ is the vehicle position, $v_i$ is its forward velocity and $\psi_i$ is its heading, $l$ is the vehicle half-length, $a_i$ is the acceleration command and $\beta_i$ is the slip angle at the centre of gravity, used as a steering command, then $z_i=[x_i,y_i,v_i,\psi_i]^\top$.
+where $(x_i, y_i)$ is the vehicle position, $v_i$ its forward velocity and $\psi_i$ its heading, $l$ its half-length, $a_i$ is the acceleration command and $\beta_i$ is the slip angle at the centre of gravity, used as a steering command, then $z_i=[x_i,y_i,v_i,\psi_i]^\top$.
 
 \subsection{Control}
 Longitudinal behaviour is modelled by a linear controller using three features inspired from the intelligent driver model (IDM) \cite{Treiber2000}: a desired velocity, a braking term to drive slower than the front vehicle, and a braking term to respect a safe distance to the front vehicle.

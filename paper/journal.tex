@@ -1,5 +1,9 @@
 \documentclass[letterpaper, 10 pt, conference]{ieeeconf}
 
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage{amsmath}
@@ -72,7 +76,7 @@ Russia.}
 \maketitle
 \thispagestyle{empty}
 \begin{abstract}
-This work studies the behaviour of uncertain linear systems subject to uncertain inputs. It is only assumed that the unknown system parameters and inputs belong to some known admissible set, and our objective is to predict a tight interval hull bounding the system trajectories. Having observed the instability of traditional interval observer techniques, we propose a novel interval predictor whose stability is guaranteed by a Lyapunov function in the form of linear matrix inequalities. In the case when an information is available about the frequency spectrum of the input signals, the predictor can be also enhanced with an improved asymptotic accuracy. We demonstrate the efficacy of our solution to a problem of robust motion planning for a self-driving car.
+This work studies the behaviour of linear parameter-varying systems subject to uncertain inputs. It is only assumed that the unknown system parameters and inputs belong to some known admissible set, and our objective is to predict a tight interval hull bounding the system trajectories. Having observed the instability of traditional interval predictor techniques, we propose a new one whose stability is guaranteed by a Lyapunov function analysis and verification of linear matrix inequalities. In the case when an information is available about the frequency spectrum of the input signals, the predictor can also be enhanced with an improved asymptotic accuracy. We demonstrate the efficacy of our solution to a problem of robust motion planning for a self-driving car.
 \end{abstract}
 
 
@@ -85,7 +89,7 @@ In the presence of uncertainty (unknown parameters or/and external disturbances)
 There are many approaches to design interval/set-membership estimators and predictors \cite{Jaulin02,Kieffer_Walter04,Bernard_Gouze04,Moisan_Bernard_Gouze09}, and this paper focuses on the design based on the monotone systems theory \cite{Bernard_Gouze04,Moisan_Bernard_Gouze09,RVZ10,REZ11,Efimov_a2012}.
 In such a way the main difficulty for synthesis consists in ensuring cooperativity of the interval error dynamics by a proper design of the algorithm. As it has been shown in \cite{MazencBernard11,REZ11,Combastel2012}, such a complexity of the design can be handled by applying an additional transformation of coordinates, which maps a stable system into a stable and monotone one. An approach for selection of a constant similarity transformation matrix representing a given interval of matrices to an interval of Metzler matrices (providing monotonicity) has been developed in \cite{Efimov_a2013,Chebotarev2015}. 
 
-The objective of this paper is to propose an interval predictor for linear time-invariant (LTI) and LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. In other words, an important problem is to keep the interval predictor stability in the presence of uncertainties and saving the interval inclusion property of the estimates, then an unstable system can definitely enclose the trajectories of a stable one, but at the price of the precision. To solve this problem, first, a generic predictor is proposed for an LPV system, whose estimates can be combined with the interval frequency based estimator presented earlier. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Second, we revisit the case of LTI models and demonstrate an asymptotic accuracy improvement that can be achieved if an additional information about external signals are given: the admissible interval of frequency spectrum. Finally, the utility of the developed theory is demonstrated on the problem of path planning for a self-driving car by making comparison with earlier results from \cite{Leurent2018}.
+The objective of this paper is to propose an interval predictor for linear time-invariant (LTI) and LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. In other words, an important problem is to keep the interval predictor stability in the presence of uncertainties and saving the interval inclusion property of the estimates, then an unstable system can definitely enclose the trajectories of a stable one, but at the price of the precision. To solve this problem, first, a generic predictor is proposed for an LPV system, whose estimates can be combined with the interval frequency based estimator presented earlier. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Second, we revisit the case of LTI models and demonstrate an asymptotic accuracy improvement that can be achieved if an additional information about external signals are given: the admissible interval of frequency spectrum. Finally, the utility of the developed theory is demonstrated on the problem of path planning for a self-driving car by making comparison with earlier results from \cite{Leurent2018}. A preliminary version of this work appears in \cite{Leurent2019} without detailed proofs and input frequency interval analysis.
 
 The paper is organized as follows. An introduction to the theory of interval estimation for LTI systems is given in Section \ref{sec:Preliminaries}. The problem statement and a motivating example are introduced in Section \ref{sec:Problem-statement}. An improved interval predictor is presented in Section \ref{sec:Main-results}. The asymptotic accuracy is enhanced using frequency based estimation in Section \ref{sec:Frequency}. Application of the developed theory to the problem of path planning for an autonomous vehicle is shown in Section \ref{sec:Examples}.
 
@@ -349,6 +353,7 @@ where
 is a diagonal matrix. The substantiated properties of $V$ and its derivative imply that \eqref{eq:IP_main} is input-to-state stable \cite{Khalil2002} with respect to the input $\delta$ (or, by its definition, with respect to $(\underline{d},\overline{d})$).
 \end{proof}
 \begin{rem}
+\label{rem:combination}
 The LMIs of the above theorem are not conservative, since the restriction on positive definiteness of involved matrix variables is not imposed on all of them separately, but on their combinations:
 \begin{gather*}
 P+\min\{Z_{+},Z_{-}\}>0,\;\Gamma>0,\\
@@ -467,6 +472,8 @@ then the system trajectories and intervals are shown in Fig. \ref{fig:IntFreq}.
 of the frequency. Taking $\tau=\frac{4}{\min_{i=\overline{1,n}}|\lambda_{i}(A)|}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definitive improvement. }
 \end{figure}
 \end{example*}
+
+Therefore, in the case of Remark \ref{rem:combination} the asymptotic estimation accuracy of the proposed interval observer \eqref{eq:IP_main} can be further improved using the result of Lemma \ref{lem:IntFreq} having an additional information about the frequency spectrum of the input. 
 
 \section{\label{sec:Examples} Prediction for a self-driving vehicle}
 
