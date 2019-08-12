@@ -10,7 +10,7 @@ The performances of a baseline interval predictor and our novel predictor are co
 
 ![](assets/interval_direct.gif)
 
-When using interval arithmetic to design a simple predictor, the predictor dynamics are unstable. The uncertainty quickly builds up until the trajectory interval covers the entire road, even through the original system dynamics are stable. This seriously hinders decision-making.
+When using interval arithmetic to design a simple predictor, the predictor dynamics are unstable. The uncertainty quickly builds up until the trajectory interval covers the entire road, even though the original system dynamics are stable. This seriously hinders decision-making.
 
 ### Novel Interval Predictor
 
