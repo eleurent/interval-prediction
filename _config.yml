@@ -3,4 +3,5 @@ title: Interval Prediction for Continuous-Time Systems with Parametric Uncertain
 description: Edouard Leurent, Denis Efimov, Tarek Raïssi, Wilfrid Perruquetti
 
 github:
-  repository_url: http://github.com/eleurent/rl-agents
+  repository_url: https://github.com/eleurent/rl-agents#irp-interval-based-robust-planning
+  paper_url: https://arxiv.org/abs/1904.04727
