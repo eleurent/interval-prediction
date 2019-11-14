@@ -2,6 +2,8 @@
 
 %% list of packages here
 \usepackage[absolute,showboxes,overlay]{textpos}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{mathtools}
 
 \usepackage{theme/beamerthemeinria}
@@ -67,12 +69,14 @@ $^2$ CNAM, Paris, France}
 		\item $x(0)\in[\underline{x}_{0},\overline{x}_{0}]$ for some \alert{known} $\underline{x}_{0},\overline{x}_{0}\in\Real^{n}$
 	\end{itemize}
 \end{assumption}
+\pause
 \begin{assumption}[Bounded parameters]
 	\begin{itemize}
-		\item $\theta(t)\in\Pi$ for some \alert{known} $\Pi$
+		\item $\theta(t)\in\Theta$ for some \alert{known} $\Theta$
 		\item The matrix function $A(\theta)$ is \alert{known}
 	\end{itemize}
 	\end{assumption}
+\pause
 \begin{assumption}[Bounded perturbations]
 	\begin{itemize}
 		\item $d(t)\in[\underline{d}(t),\overline{d}(t)]$ for some \alert{known} signals $\underline{d},\overline{d}\in\cL_{\infty}^{n}$
@@ -85,18 +89,70 @@ $^2$ CNAM, Paris, France}
 \end{frame}
 
 \begin{frame}{A first idea}
-Why not use \alert{interval arithmetics}?
-\begin{exampleblock}{Dynamics bounds}
-	$\theta\rightarrow A(\theta)$ and $\Pi$ are known
-	\begin{itemize}
-		\item[$\drsh$] we can compute $\underline{A},\overline{A}\in\Real^{n\times n}$ such that:
-		\[
-		\underline{A}\leq A(\theta)\leq\overline{A},\quad\forall\theta\in\Pi.
-		\]
-	\end{itemize} 
-\end{exampleblock}
+
+Assume that $\underline{x}(t)\le x(t)\le\overline{x}(t)$, for some $t\geq0$. 
+\pause
+\begin{itemize}[<+->]
+	\item[$\drsh$] To propagate the interval to $x(t+dt)$, we need to \\ \alert{bound $A(\theta(t))x(t)$}.
+	\item[$\drsh$] Why not use \alert{interval arithmetics}?
+\end{itemize}
+
+\only<1-4>{\visible<4>{
+\begin{lemma}[Image of an interval]
+If $A$ a \alert{known} matrix, then
+\begin{equation*}
+A^{+}\underline{x}-A^{-}\overline{x}\le Ax\le A^{+}\overline{x}-A^{-}\underline{x}.\label{eq:Interval1}
+\end{equation*}
+where $A^+ = \max(A, 0)$ and $A^- = A-A^+$. 
+\end{lemma}
+}}
+\only<5-6>{
+\begin{lemma}[Product of intervals]
+	If $A$ is \alert{unknown} but \alert{bounded} \textup{$\underline{A}\le A\le\overline{A}$},
+	\begin{gather*}
+	\underline{A}^{+}\underline{x}^{+}-\overline{A}^{+}\underline{x}^{-}-\underline{A}^{-}\overline{x}^{+}+\overline{A}^{-}\overline{x}^{-}\leq Ax\\
+	\leq\overline{A}^{+}\overline{x}^{+}-\underline{A}^{+}\overline{x}^{-}-\overline{A}^{-}\underline{x}^{+}+\underline{A}^{-}\underline{x}^{-}. 
+	\end{gather*}
+\end{lemma}
+}
+\visible<6>{Since $A(\theta)$ and the set $\Theta$ are known, \\
+	we can easily compute such bounds $\underline{A} \leq A(\theta(t))\leq \overline{A}$}
 \end{frame}
 
+
+\begin{frame}{A candidate predictor}
+Following this result, define the predictor:
+\begin{eqnarray}
+\dot{\underline{x}}(t) & = & \underline{A}^{+}\underline{x}^{+}(t)-\overline{A}^{+}\underline{x}^{-}(t)-\underline{A}^{-}\overline{x}^{+}(t)\nonumber \\
+&  & +\overline{A}^{-}\overline{x}^{-}(t)+B^{+}\underline{d}(t)-B^{-}\overline{d}(t),\label{eq:IP_direct}\\
+\dot{\overline{x}}(t) & = & \overline{A}^{+}\overline{x}^{+}(t)-\underline{A}^{+}\overline{x}^{-}(t)-\overline{A}^{-}\underline{x}^{+}(t)\nonumber \\
+&  & +\underline{A}^{-}\underline{x}^{-}(t)+B^{+}\overline{d}(t)-B^{-}\underline{d}(t),\nonumber \\
+&  & \underline{x}(0)=\underline{x}_{0},\;\overline{x}(0)=\overline{x}_{0},\nonumber
+\end{eqnarray}
+\pause
+\begin{proposition}[Inclusion property]
+	\begin{itemize}
+		\item[\checkmark] The predictor \eqref{eq:IP_direct} satisfies $\ux\leq x(t)\leq \ox(t)$
+	\end{itemize} 
+\end{proposition}
+\pause
+\begin{itemize}
+	\item[?] But is it stable?
+\end{itemize}
+\end{frame}
+\begin{frame}{Motivating example}
+Consider the scalar system, for all $t\geq0$:
+\[
+	\dot{x}(t)=-\theta(t)x(t)+d(t), \text{ where} 
+	\begin{cases}
+	x(0)\in[\underline{x}_{0},\overline{x}_{0}]=[1.0, 1.1],\\
+	\theta(t)\in\Theta=[\underline{\theta},\overline{\theta}]=[1,2],\\
+	d(t)\in[\underline{d},\overline{d}]=[-0.1,0.1],
+	\end{cases}
+\]
+
+
+\end{frame}
 
 \section{Proposed predictor}
 \frame{\sectionpage}
