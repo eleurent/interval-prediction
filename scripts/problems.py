@@ -5,12 +5,12 @@ from utils import intervals_product, p, n
 
 
 class Integrator(LP):
-    def __init__(self, x0=[5.5]):
-        A = [[-1]]
+    def __init__(self, x0=[1]):
+        A = [[-2]]
         B = [[1]]
-        dAs = [[[0]], [[0.5]]]
-        x_i = [[5], [6]]
-        super().__init__(x0, A, dAs, B, d_i=[[-0.2], [0.2]], x_i=x_i)
+        dAs = [[[0]], [[1]]]
+        x_i = [[1], [1.1]]
+        super().__init__(x0, A, dAs, B, d_i=[[-0.05], [0.05]], x_i=x_i)
 
 
 class DoubleIntegrator(LP):

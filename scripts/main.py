@@ -78,7 +78,7 @@ def main(trajectories=False,
     for i in range(sys.x0.size):
         if sys.x0.size > 1:
             axes[i, 0].set_ylabel(r'$x_{}(t)$'.format(i+1), fontsize=22)
-        axes[i, 0].set_ylim([-1, 7])
+        axes[i, 0].set_ylim([-0.2, 1.2])
         axes[i, 0].margins(x=0, y=0.2)
         axes[i, 0].set_xlim([time[0], time[-1]])
         axes[i, 0].grid(True)
@@ -93,4 +93,5 @@ def main(trajectories=False,
 
 
 if __name__ == "__main__":
+    np.random.seed(0)
     main(trajectories=True, full_interval=True)

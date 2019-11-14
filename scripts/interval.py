@@ -4,7 +4,7 @@ import numpy as np
 from utils import p, n, intervals_product, mesh_box, is_metzler
 
 dt = 0.01
-time = np.arange(0, 7, dt)
+time = np.arange(0, 6, dt)
 
 
 class LP(object):
