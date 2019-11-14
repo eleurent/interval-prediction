@@ -3,8 +3,10 @@
 %% list of packages here
 \usepackage[absolute,showboxes,overlay]{textpos}
 \usepackage{amssymb}
+\usepackage{pifont}
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{multicol}
 
 \usepackage{theme/beamerthemeinria}
 %\usepackage{theme/beamerthemeinria2}
@@ -51,11 +53,14 @@ $^2$ CNAM, Paris, France}
 \begin{frame}{The goal}
 \begin{block}{Interval Prediction}
 	Can we design an interval predictor $[\ux, \ox]$ that verifies:
+	\vspace*{0.175cm}
 	\begin{itemize}
 		\item inclusion property: $\forall t, \ux \leq x(t) \leq \ox$;
 		\item stable dynamics?
 	\end{itemize}
+	\vspace*{0.175cm}
 	We want the predictor to be as tight as possible.
+
 \end{block}
 
 \centering
@@ -115,8 +120,12 @@ where $A^+ = \max(A, 0)$ and $A^- = A-A^+$.
 	\end{gather*}
 \end{lemma}
 }
-\visible<6>{Since $A(\theta)$ and the set $\Theta$ are known, \\
-	we can easily compute such bounds $\underline{A} \leq A(\theta(t))\leq \overline{A}$}
+\visible<6>{
+	\begin{itemize}
+		\item[\green \checkmark] Since $A(\theta)$ and the set $\Theta$ are known, \\
+		we can easily compute such bounds $\underline{A} \leq A(\theta(t))\leq \overline{A}$
+	\end{itemize}
+}
 \end{frame}
 
 
@@ -150,54 +159,48 @@ Consider the scalar system, for all $t\geq0$:
 	d(t)\in[\underline{d},\overline{d}]=[-0.1,0.1],
 	\end{cases}
 \]
+\begin{center}
+\includegraphics<1>[trim={0 1.4cm 0 0.4cm}, clip, width=0.7\linewidth]{img/system}
+\includegraphics<2>[trim={0 1.4cm 0 0.4cm}, clip, width=0.7\linewidth]{img/observer}
+\end{center}
 
+\begin{columns}
+	\begin{column}{0.48\linewidth}
+		\begin{itemize}
+			\item[{\green \checkmark}] The system is always {\green stable}
+		\end{itemize}
+	\end{column}
+	\begin{column}{0.52\linewidth}
+		\begin{itemize}
+			\item<2>[{\red \xmark}] The predictor \eqref{eq:IP_direct} is {\red unstable}
+		\end{itemize}
+	\end{column}
+\end{columns}
 
 \end{frame}
 
-\section{Proposed predictor}
+\section{Our proposed predictor}
 \frame{\sectionpage}
 
 
-\begin{frame}{Our proposed predictor}
-    \begin{alertblock}{}
- \begin{itemize}
-    \item{Item 1 }
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{alertblock}
-      \begin{alertblock}{Avec titre}
- \begin{itemize}
-    \item{Item 1 }
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{alertblock}
+\begin{frame}{Additional assumption}
+\begin{assumption}[Polytopic Structure]
+	\label{ass:a3} There exist $A_{0}$ \alert{Metzler} and $\Delta A_{0}, \cdots, \Delta A_{N}$ such that:
+	\begin{gather*}
+	A(\theta)=\underbrace{A_{0}}_{\substack{\text{Nominal}\\\text{dynamics}}} + \sum_{i=1}^{N}\lambda_{i}(\theta)\Delta A_{i},\quad \sum_{i=1}^{N}\underbrace{\lambda_{i}(\theta)}_{\geq 0}=1;\quad \forall\theta\in\Theta
+	\end{gather*}
+\end{assumption}
+\centering
+\includegraphics[width=0.42\linewidth]{img/polytope}
 \end{frame}
 
-%Chapitre 3
+
+
 \section{Application to autonomous driving}
+
+
  \frame{\sectionpage}
 
-\begin{frame}{Deux autres exemples de blocs}
-    \begin{exampleblock}{}
- \begin{itemize}
-    \item{Item 1 }
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{exampleblock}
-      \begin{exampleblock}{Avec titre}
- \begin{itemize}
-    \item{Item 1 }
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-\begin{frame}{Titre}
-Du \textcolor{gris_fonce_inria}{texte}  {en}  \textcolor{rouge_inria}{couleur} 
-\end{frame}
 \begin{frame}{Conclusion}
  
 \end{frame}
