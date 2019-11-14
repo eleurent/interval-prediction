@@ -3,17 +3,19 @@
 %% list of packages here
 \usepackage[absolute,showboxes,overlay]{textpos}
 \usepackage{mathtools}
-\input{mathdef}
 
 \usepackage{theme/beamerthemeinria}
 %\usepackage{theme/beamerthemeinria2}
 %\usepackage{theme/beamerthemeinria3}
 
+\input{mathdef}
+%\input{theme/style}
 
-\title[titrecourt]{Titre sur une ligne\\ ou deux}
-\subtitle{sous-titre}
-\date[date]{date}
-\author[Auteur]{Auteur}
+\title[Interval Prediction with Parametric Uncertainties]{Interval Prediction for \\ Continuous-Time Systems with \\ Parametric Uncertainties}
+\subtitle{$^1$ Inria Valse, Lille, France\\
+$^2$ CNAM, Paris, France}
+\date[December, 2019]{December, 2019}
+\author[Denis Efimov]{Edouard Leurent$^1$, \textbf{Denis Efimov}$^1$, \\Tarek Ra\"issi$^2$, Wilfrid Perruquetti$^1$}
 
 
 \begin{document}
@@ -22,44 +24,85 @@
     \titlepage
 \end{frame}
 
-
 \frame{\tocpage}
  
-\section{Titre du chapitre}
+\section{Problem statement}
+
 \frame{\sectionpage}
 
-\begin{frame}{Deux exemples de blocs}
-    \begin{block}{}
- \begin{itemize}
-    \item{Item 1 }
-    \begin{itemize}
-        \item {Sous-item 1}
- \item {Sous-item 2}
-        \begin{itemize}
-        \item {Sous-sous-item 1}
-\item {Sous-sous-item 2}
-    \end{itemize}
-    \end{itemize}
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{block}
-      \begin{block}{Avec titre}
- \begin{itemize}
-    \item{Item 1 }
-    \item {Item 2}
-    \item {Item 3}
-    \end{itemize}
-  \end{block}
+\begin{frame}{The setting}
+\begin{block}{Linear Parameter-Varying systems}
+	\begin{equation*}
+	\dot{x}(t)=A(\theta(t))x(t)+Bd(t)\label{eq:LPV_syst}
+	\end{equation*}
+	There are two sources of uncertainty:
+	\begin{itemize}
+		\item Parametric uncertainty $\theta(t)$
+		\item External perturbations $d(t)$
+	\end{itemize}
+\end{block}
+
+\centering
+\includegraphics[width=0.45\textwidth]{img/interval-hull-0}
+\end{frame}
+
+\begin{frame}{The goal}
+\begin{block}{Interval Prediction}
+	Can we design an interval predictor $[\ux, \ox]$ that verifies:
+	\begin{itemize}
+		\item inclusion property: $\forall t, \ux \leq x(t) \leq \ox$;
+		\item stable dynamics?
+	\end{itemize}
+	We want the predictor to be as tight as possible.
+\end{block}
+
+\centering
+\includegraphics[width=0.45\textwidth]{img/interval-hull}
+\end{frame}
+
+\begin{frame}{Assumptions}
+\begin{assumption}[Bounded trajectories]
+	\begin{itemize}
+		\item $\|x\|_{\infty} < \infty$
+		\item $x(0)\in[\underline{x}_{0},\overline{x}_{0}]$ for some \alert{known} $\underline{x}_{0},\overline{x}_{0}\in\Real^{n}$
+	\end{itemize}
+\end{assumption}
+\begin{assumption}[Bounded parameters]
+	\begin{itemize}
+		\item $\theta(t)\in\Pi$ for some \alert{known} $\Pi$
+		\item The matrix function $A(\theta)$ is \alert{known}
+	\end{itemize}
+	\end{assumption}
+\begin{assumption}[Bounded perturbations]
+	\begin{itemize}
+		\item $d(t)\in[\underline{d}(t),\overline{d}(t)]$ for some \alert{known} signals $\underline{d},\overline{d}\in\cL_{\infty}^{n}$
+	\end{itemize}
+\end{assumption}
+
+\begin{flushright}
+	How to proceed?
+\end{flushright}
+\end{frame}
+
+\begin{frame}{A first idea}
+Why not use \alert{interval arithmetics}?
+\begin{exampleblock}{Dynamics bounds}
+	$\theta\rightarrow A(\theta)$ and $\Pi$ are known
+	\begin{itemize}
+		\item[$\drsh$] we can compute $\underline{A},\overline{A}\in\Real^{n\times n}$ such that:
+		\[
+		\underline{A}\leq A(\theta)\leq\overline{A},\quad\forall\theta\in\Pi.
+		\]
+	\end{itemize} 
+\end{exampleblock}
 \end{frame}
 
 
-%Chapitre 2
-\section{Titre du chapitre}
- \frame{\sectionpage}
+\section{Proposed predictor}
+\frame{\sectionpage}
 
 
-\begin{frame}{Deux autres exemples de blocs}
+\begin{frame}{Our proposed predictor}
     \begin{alertblock}{}
  \begin{itemize}
     \item{Item 1 }
@@ -77,7 +120,7 @@
 \end{frame}
 
 %Chapitre 3
-\section{Titre du chapitre}
+\section{Application to autonomous driving}
  \frame{\sectionpage}
 
 \begin{frame}{Deux autres exemples de blocs}
@@ -99,7 +142,6 @@
 \begin{frame}{Titre}
 Du \textcolor{gris_fonce_inria}{texte}  {en}  \textcolor{rouge_inria}{couleur} 
 \end{frame}
-\section{Conclusion}
 \begin{frame}{Conclusion}
  
 \end{frame}
