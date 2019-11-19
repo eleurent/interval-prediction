@@ -8,19 +8,25 @@
 \usepackage{mathtools}
 \usepackage{multicol}
 \usepackage{blkarray}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[backend=biber, citestyle=authoryear, maxcitenames=2, maxbibnames=20]{biblatex}
+\bibliography{../interval_lpv.bib}
 
 \usepackage{theme/beamerthemeinria}
 %\usepackage{theme/beamerthemeinria2}
 %\usepackage{theme/beamerthemeinria3}
 
 \input{mathdef}
-%\input{theme/style}
+\input{theme/style}
 
 \title[Interval Prediction with Parametric Uncertainties]{Interval Prediction for \\ Continuous-Time Systems with \\ Parametric Uncertainties}
-\subtitle{$^1$ Inria Valse, Lille, France\\
-$^2$ CNAM, Paris, France}
+\subtitle{$^1$ Inria, Lille, France\\
+$^2$ Renault Group, Guyancourt, France\\
+$^3$ CNAM, Paris, France\\
+$^4$ Centrale Lille, France}
 \date[December, 2019]{December, 2019}
-\author[Denis Efimov]{Edouard Leurent$^1$, \textbf{Denis Efimov}$^1$, \\Tarek Ra\"issi$^2$, Wilfrid Perruquetti$^1$}
+\author[Denis Efimov]{Edouard Leurent$^{1,2}$, \textbf{Denis Efimov}$^1$, \\Tarek Ra\"issi$^3$, Wilfrid Perruquetti$^4$}
 
 
 \begin{document}
@@ -34,6 +40,24 @@ $^2$ CNAM, Paris, France}
 \section{Problem statement}
 
 \frame{\sectionpage}
+
+\begin{frame}{Motivation}
+
+We are interested in \alert{trajectory planning} for an autonomous vehicle.
+ 
+ \begin{center}
+ \href{https://github.com/eleurent/highway-env\#highway}{
+ \includegraphics[width=0.7\textwidth]{img/highway-env}}    
+ \end{center}
+
+\begin{enumerate}
+    \item We need to \alert{predict} the behaviours of other drivers
+    \item These behaviours are {\red uncertain} and {\red non-linear}
+\end{enumerate}
+\vspace*{\baselineskip}
+In order to efficiently capture model uncertainty, we consider the modelling framework of \alert{Linear Parameter-Varying} systems.
+
+\end{frame}
 
 \begin{frame}{The setting}
 \begin{block}{Linear Parameter-Varying systems}
@@ -104,7 +128,7 @@ Assume that $\underline{x}(t)\le x(t)\le\overline{x}(t)$, for some $t\geq0$.
 \end{itemize}
 
 \only<1-4>{\visible<4>{
-\begin{lemma}[Image of an interval]
+\begin{lemma}[Image of an interval (\cite{EFRZS12})]
 If $A$ a \alert{known} matrix, then
 \begin{equation*}
 A^{+}\underline{x}-A^{-}\overline{x}\le Ax\le A^{+}\overline{x}-A^{-}\underline{x}.\label{eq:Interval1}
@@ -113,7 +137,7 @@ where $A^+ = \max(A, 0)$ and $A^- = A-A^+$.
 \end{lemma}
 }}
 \only<5-6>{
-\begin{lemma}[Product of intervals]
+\begin{lemma}[Product of intervals (\cite{EFRZS12})]
 	If $A$ is \alert{unknown} but \alert{bounded} \textup{$\underline{A}\le A\le\overline{A}$},
 	\begin{gather*}
 	\underline{A}^{+}\underline{x}^{+}-\overline{A}^{+}\underline{x}^{-}-\underline{A}^{-}\overline{x}^{+}+\overline{A}^{-}\overline{x}^{-}\leq Ax\\
@@ -195,7 +219,7 @@ Consider the scalar system, for all $t\geq0$:
 \includegraphics[width=0.42\linewidth]{img/polytope}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Our proposed predictor}
 Denote
 \[
 \Delta A_{+}=\sum_{i=1}^{N}\Delta A_{i}^{+},\;\Delta A_{-}=\sum_{i=1}^{N}\Delta A_{i}^{-},
@@ -212,53 +236,67 @@ We define the predictor
 
 \begin{theorem}[Inclusion property]
 	\label{thm:main}
-	The predictor \eqref{eq:IP_main} ensures $\ux\leq x(t)\leq \ox(t)$. 
+	The predictor \eqref{eq:IP_main} ensures $\ux\leq x(t)\leq \ox$. 
 \end{theorem}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Stability}
 
 \begin{theorem}[Stability]
 	If there exist diagonal matrices $P$, $Q$, $Q_{+}$, $Q_{-}$, $Z_{+}$, $Z_{-}$, $\Psi_{+}$, $\Psi_{-}$, $\Psi$, $\Gamma\in\Real^{2n\times2n}$ such that the following LMIs are satisfied:
 	\begin{gather*}
-	P+\min\{Z_{+},Z_{-}\}>0,\;\Upsilon\preceq0,\;\Gamma>0,\\
+	P+\min\{Z_{+},Z_{-}\}>0,\;\hleb{\Upsilon\preceq0},\;\Gamma>0,\\
 	Q+\min\{Q_{+},Q_{-}\}+2\min\{\Psi_{+},\Psi_{-}\}>0,
 	\end{gather*}
+	where \hlb{$\Upsilon = \Upsilon(A_0, \Delta A_-, \Delta A_+, \Psi_-, \Psi_+, \Psi)$}, 
+	
 	then the predictor \eqref{eq:IP_main} is input-to-state stable with respect to the inputs $\underline{d}$, $\overline{d}$.
 \end{theorem}
+
 \end{frame}
 
-\begin{frame}
-where{\footnotesize{}
-	\begin{gather*}
-	\Upsilon=\left[\begin{array}{cccc}
-	\Upsilon_{11} & \Upsilon_{12} & \Upsilon_{13} & P\\
-	\Upsilon_{12}^{\top} & \Upsilon_{22} & \Upsilon_{23} & Z_{+}\\
-	\Upsilon_{13}^{\top} & \Upsilon_{23}^{\top} & \Upsilon_{33} & Z_{-}\\
-	P & Z_{+} & Z_{-} & -\Gamma
-	\end{array}\right],\\
-	\Upsilon_{11}=\mathcal{A}^{\top}P+P\mathcal{A}+Q,\;\Upsilon_{12}=\mathcal{A}^{\top}Z_{+}+PR_{+}+\Psi_{+},\\
-	\Upsilon_{13}=\mathcal{A}^{\top}Z_{-}+PR_{-}+\Psi_{-},\;\Upsilon_{22}=Z_{+}R_{+}+R_{+}^{\top}Z_{+}+Q_{+},\\
-	\Upsilon_{23}=Z_{+}R_{-}+R_{+}^{\top}Z_{-}+\Psi,\;\Upsilon_{33}=Z_{-}R_{-}+R_{-}^{\top}Z_{-}+Q_{-},\\
-	\mathcal{A}=\left[\begin{array}{cc}
-	A_{0} & 0\\
-	0 & A_{0}
-	\end{array}\right],\;R_{+}=\left[\begin{array}{cc}
-	0 & -\Delta A_{-}\\
-	0 & \Delta A_{+}
-	\end{array}\right],\;R_{-}=\left[\begin{array}{cc}
-	\Delta A_{+} & 0\\
-	-\Delta A_{-} & 0
-	\end{array}\right],
-	\end{gather*}
-}
-\end{frame}
+% \begin{frame}
+% where{\footnotesize{}
+% 	\begin{gather*}
+% 	\Upsilon=\left[\begin{array}{cccc}
+% 	\Upsilon_{11} & \Upsilon_{12} & \Upsilon_{13} & P\\
+% 	\Upsilon_{12}^{\top} & \Upsilon_{22} & \Upsilon_{23} & Z_{+}\\
+% 	\Upsilon_{13}^{\top} & \Upsilon_{23}^{\top} & \Upsilon_{33} & Z_{-}\\
+% 	P & Z_{+} & Z_{-} & -\Gamma
+% 	\end{array}\right],\\
+% 	\Upsilon_{11}=\mathcal{A}^{\top}P+P\mathcal{A}+Q,\;\Upsilon_{12}=\mathcal{A}^{\top}Z_{+}+PR_{+}+\Psi_{+},\\
+% 	\Upsilon_{13}=\mathcal{A}^{\top}Z_{-}+PR_{-}+\Psi_{-},\;\Upsilon_{22}=Z_{+}R_{+}+R_{+}^{\top}Z_{+}+Q_{+},\\
+% 	\Upsilon_{23}=Z_{+}R_{-}+R_{+}^{\top}Z_{-}+\Psi,\;\Upsilon_{33}=Z_{-}R_{-}+R_{-}^{\top}Z_{-}+Q_{-},\\
+% 	\mathcal{A}=\left[\begin{array}{cc}
+% 	A_{0} & 0\\
+% 	0 & A_{0}
+% 	\end{array}\right],\;R_{+}=\left[\begin{array}{cc}
+% 	0 & -\Delta A_{-}\\
+% 	0 & \Delta A_{+}
+% 	\end{array}\right],\;R_{-}=\left[\begin{array}{cc}
+% 	\Delta A_{+} & 0\\
+% 	-\Delta A_{-} & 0
+% 	\end{array}\right],
+% 	\end{gather*}
+% }
+% \end{frame}
 
 \begin{frame}{Sketch of proof}
 \begin{enumerate}
 	\item Define the extended state vector as $X=[\underline{x}^{\top}\;\;\overline{x}^{\top}]^{\top}$
-	\item It follows the dynamics $\dot{X}(t)=\mathcal{A}X(t)+R_{+}X^{+}(t)-R_{-}X^{-}(t)+\delta(t)$
+	\item It follows the dynamics $$\dot{X}(t)=\mathcal{A}X(t)+R_{+}X^{+}(t)-R_{-}X^{-}(t)+\delta(t)$$
+	$$\mathcal{A}=\left[\begin{array}{cc}
+    A_{0} & 0\\
+    0 & A_{0}
+    \end{array}\right]
+    	\;R_{+}=\left[\begin{array}{cc}
+    0 & -\Delta A_{-}\\
+    0 & \Delta A_{+}
+    \end{array}\right],\;R_{-}=\left[\begin{array}{cc}
+    \Delta A_{+} & 0\\
+    -\Delta A_{-} & 0
+    \end{array}\right]$$
 	\item Consider a candidate Lyapunov function:
 	\begin{gather*}
 	V(X)=X^{\top}PX+X{}^{\top}Z_{+}X^{+}-X^{\top}Z_{-}X^{-}
@@ -272,7 +310,7 @@ where{\footnotesize{}
 \end{frame}
 
 \begin{frame}{Back to our motivating example}
-Recall the scalar system, for all $t\geq0$:
+Recall the scalar system:
 \[
 \dot{x}(t)=-\theta(t)x(t)+d(t), \text{ where} 
 \begin{cases}
@@ -305,7 +343,13 @@ d(t)\in[\underline{d},\overline{d}]=[-0.1,0.1],
 
  \frame{\sectionpage}
  
- \begin{frame}{Multi-agent system}
+ \begin{frame}{A multi-agent system}
+ 
+ \begin{center}
+ \href{https://github.com/eleurent/highway-env\#highway}{
+ \includegraphics[width=0.7\textwidth]{img/highway-env}}    
+ \end{center}
+ 
  $$\dot{z}_i=f_i(Z,\theta_i),\;i=\overline{1,N},$$ where
  
  \begin{itemize}
@@ -317,7 +361,19 @@ d(t)\in[\underline{d},\overline{d}]=[-0.1,0.1],
 \end{frame}
 
 \begin{frame}{Kinematics}
-Each vehicle follows the Kinematic Bicycle Model
+\begin{center}
+\begin{tabular}{ccl}
+    \toprule
+    \multirow{3}{*}{States} & $(x_i, y_i)$ & position \\
+    & $v_i$ & longitudinal velocity \\
+    & $\psi_i$ & yaw angle \\
+    \midrule
+    \multirow{2}{*}{Controls} & $a_i$ & longitudinal acceleration \\
+    & $\beta_i$ & slip angle at the center of gravity \\
+    \bottomrule
+\end{tabular}
+\end{center}
+Each vehicle follows the Kinematic Bicycle Model:
 \begin{align}
 	\dot{x}_i &= v_i\cos(\psi_i), \nonumber\\
 	\dot{y}_i &= v_i\sin(\psi_i), \nonumber\\
@@ -327,7 +383,7 @@ Each vehicle follows the Kinematic Bicycle Model
 \end{frame}
 
 \begin{frame}{Longitudinal control}
-A linear controller using three features inspired from the intelligent driver model (IDM) \cite{Treiber2000}.
+A linear controller using three features inspired from the intelligent driver model (IDM) [\cite{Treiber2000}].
 
 	\begin{equation*}
 	a_i = \begin{bmatrix}
@@ -339,11 +395,23 @@ A linear controller using three features inspired from the intelligent driver mo
 	\end{bmatrix},
 	\label{eq:theta_a}
 	\end{equation*}
-	where $v_0, d_0$ and $T$ respectively denote the speed limit, jam distance and time gap given by traffic rules.
+	%where $v_0, d_0$ and $T$ respectively denote the speed limit, jam distance and time gap given by traffic rules, and $f_i$ is the index of the leading vehicle of vehicle $i$.
+	where
+	\begin{center}
+	\begin{tabular}{cl}
+    \toprule
+    $v_0$ & speed limit \\
+    $d_0$ & jam distance \\
+    $T$ & time gap \\
+    $f_i$ & index of vehicle $i$'s front vehicle\\
+    \bottomrule
+    \end{tabular}    
+	\end{center}
+	
 \end{frame}
 
 \begin{frame}{Lateral Control}
-A cascade controller of lateral position $y$ and heading $\psi$:
+A cascade controller of lateral position $y_i$ and heading $\psi_i$:
 \begin{align}
 \label{eq:heading-command}
 \dot{\psi}_i &= \theta_{i,5}\left(\psi_{L_i}+\sin^{-1}\left(\frac{\tilde{v}_{i,y}}{v_i}\right)-\psi_i\right),\\
@@ -354,7 +422,7 @@ We assume that the drivers choose their steering command $\beta_i$ such that \eq
 
 \begin{frame}{LPV Formulation}
 
-Linearize trigonometric operators around $y_i=y_{L_i}$ and $\psi_i=\psi_{L_i}$.
+We linearize trigonometric operators around $y_i=y_{L_i}$ and $\psi_i=\psi_{L_i}$.
 
 This yields the following longitudinal dynamics:
 \begin{align*}
@@ -413,8 +481,8 @@ The lateral dynamics are in a similar form:
 \end{bmatrix}
 =
 \begin{bmatrix}
-0 & v_i \\
--\frac{\theta_{i,4} \theta_{i,5}}{v_i} & -\theta_{i,5}
+0 & {\red v_i} \\
+-\frac{\theta_{i,4} \theta_{i,5}}{\red v_i} & -\theta_{i,5}
 \end{bmatrix}
 \begin{bmatrix}
 y_i - y_{L_i} \\
@@ -426,17 +494,19 @@ v_i\psi_{L_i} \\
 0
 \end{bmatrix}
 \end{equation*}
-Here, the dependency in $v_i$ is seen as an uncertain parametric dependency, \emph{i.e.} $\theta_{i,6}=v_i$, with constant bounds assumed for $v_i$ using an overset of the longitudinal interval predictor.
+Here, the dependency in {\red $v_i$} is seen as an uncertain parametric dependency, \emph{i.e.} \alert{$\theta_{i,6}=v_i$}, with constant bounds assumed for $v_i$ using an overset of the longitudinal interval predictor.
 \end{frame}
 
 \begin{frame}{Results}
 \centering
 \vspace*{\baselineskip}
-\includegraphics[width=0.75\textwidth]{../img/driving_observer.png}
+\href{https://eleurent.github.io/interval-prediction/\#direct-interval-predictor}{
+\includegraphics[width=0.75\textwidth]{../img/driving_observer.png}}
 
 The naive predictor \eqref{eq:IP_direct} quickly diverges
 
-\includegraphics[width=0.75\textwidth]{../img/driving_predictor.png}
+\href{https://eleurent.github.io/interval-prediction/\#novel-interval-predictor}{
+\includegraphics[width=0.75\textwidth]{../img/driving_predictor.png}}
 
 The proposed predictor \eqref{eq:IP_main} remains stable
 \end{frame}
@@ -444,16 +514,40 @@ The proposed predictor \eqref{eq:IP_main} remains stable
 \begin{frame}{Results}
 \centering
 \vspace*{\baselineskip}
-\includegraphics[width=0.75\textwidth]{../img/lane_change_predictor.png}
+\href{https://eleurent.github.io/interval-prediction/\#novel-interval-predictor}{
+\includegraphics[width=0.75\textwidth]{../img/lane_change_predictor.png}}
 
 Prediction during a lane change maneuver
 
-\includegraphics[width=0.75\textwidth]{../img/overtake.png}
+\href{https://eleurent.github.io/interval-prediction/\#right-hand-traffic}{
+\includegraphics[width=0.75\textwidth]{../img/overtake.png}}
 
 Prediction with uncertainty in the followed lane $L_i$
 \end{frame}
 
 \begin{frame}{Conclusion}
- 
+    
+    \begin{block}{Problem formulation}
+    \begin{itemize}
+        \item Prediction of an {\red uncertain non-linear} system
+        \item[\red $\drsh$] Within the \alert{LPV} framework
+        \item[\red $\drsh$] Design of an \alert{interval} predictor $[\underline{x}(t), \overline{x}(t)]$?
+    \end{itemize}
+    \end{block}
+    
+    \begin{block}{Proposed solution}
+    \begin{itemize}
+        \item Direct prediction with interval arithmetics is \alert{valid} but {\red unstable}
+        \item[\red $\drsh$] Assume \alert{polytopic uncertainty} structure around a nominal $A_0$
+        \item[\red $\drsh$] \alert{Ensure stability} using a Luyapunov function in an LMI form
+    \end{itemize}
+    \end{block}
+    
+    \begin{block}{Application}
+    \begin{itemize}
+        \item Joint prediction of coupled traffic dynamics
+        \item Can be used as a building block for robust planning
+    \end{itemize}
+    \end{block}
 \end{frame}
 \end{document}
