@@ -37,21 +37,31 @@ def main(trajectories=False,
             for i in range(sys.x0.size):
                 axes[i, 0].plot(time, sys.trajectory(mesh_point, random=True)[:, i],
                                 color=t_color,
-                                alpha=0.2)
+                                alpha=0.1)
 
     # Full interval
-    next(palette)
-    next(palette)
+    orange = next(palette)
     color = next(palette)
+    red = next(palette)
     if full_interval:
         for i in range(sys.x0.size):
+            interval = sys.interval_trajectory(predictor=False)
+            axes[i, 0].plot(time, interval[:, :, i],
+                            linestyle="dashed",
+                            linewidth=2.5,
+                            color=orange,
+                            alpha=1,
+                            label=r"$\underline{x}(t),\overline{x}(t)$ from (18)")
+
+
             interval = sys.interval_trajectory(predictor=True)
             axes[i, 0].plot(time, interval[:, :, i],
                             linestyle="dashed",
-                            linewidth=2,
-                            color=color,
+                            linewidth=2.5,
+                            color=red,
                             alpha=1,
-                            label=r"$\underline{x}(t), \overline{x}(t)$")
+                            label=r"$\underline{x}(t),\overline{x}(t)$ from (19)")
+
 
             # Asymptotic enhancement
             if False:
@@ -67,7 +77,7 @@ def main(trajectories=False,
                 plt.xticks([0, 0.5*sys.tau, sys.tau], ["0", r"$0.5\tau$", r"$\tau$"])
 
     # Display
-    display = (0, 1)
+    display = (0, 1, 3)
     handles, labels = axes[0, 0].get_legend_handles_labels()
     leg_func = plt.figlegend if sys.x0.size > 1 else plt.legend
     leg_func([handle for i, handle in enumerate(handles) if i in display],
