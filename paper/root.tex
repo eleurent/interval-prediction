@@ -1,8 +1,8 @@
 \documentclass[letterpaper, 10 pt, conference]{ieeeconf}
 
 \IEEEoverridecommandlockouts                              % This command is only
-														  % needed if you want to
-														  % use the \thanks command
+                                                          % needed if you want to
+                                                          % use the \thanks command
 
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
@@ -68,43 +68,34 @@ Russia.}
     \thanks{Tarek Ra\"issi is with Conservatoire National des Arts et M\'etiers (CNAM), Cedric 292, Rue St-Martin, 75141 Paris, France. }
     \thanks{Wilfrid Perruquetti is with Centrale Lille, CNRS, UMR 9189 - CRIStAL,
     	F-59000 Lille, France.}
-    \thanks{This work is partially supported by the Government of Russian Federation
-    	(Grant 08-08) and the Ministry of Education and Science of Russian
-    	Federation (Project 14.Z50.31.0031).}
 }
 
 \maketitle
-\thispagestyle{empty}
 \begin{abstract}
-The problem of behaviour prediction for linear parameter-varying systems is considered in the interval framework. It is assumed that the system is subject to uncertain inputs and the vector of scheduling parameters is unmeasurable, but all uncertainties take values in a given admissible set. Then an interval predictor is designed and its stability is guaranteed applying Lyapunov function with a novel structure. The conditions of stability are formulated in the form of linear matrix inequalities.
-An interval predictor/observer is also proposed with improved accuracy for the case when an information is available about the frequency spectrum of the input signals. Efficiency of the theoretical results is demonstrated in the application to safe motion planning for autonomous vehicles.
+The problem of behaviour prediction for linear parameter-varying systems is considered in the interval framework. It is assumed that the system is subject to uncertain inputs and the vector of scheduling parameters is unmeasurable, but all uncertainties take values in a given admissible set. Then an interval predictor is designed and its stability is guaranteed applying Lyapunov function with a novel structure. The conditions of stability are formulated in the form of linear matrix inequalities. Efficiency of the theoretical results is demonstrated in the application to safe motion planning for autonomous vehicles.
 \end{abstract}
 
 
 \section{Introduction}
 
-There are plenty of emerging application domains nowadays, where the decision algorithms have to operate in the conditions of a severe uncertainty. To mention a few: the systems biology and control of bioreactors (where it is hard to establish detailed models and it is impossible to isolate and evaluate most of the external to the plant perturbations) and the path planning for self-driving cars (where despite of a large parametric variation of the models, the presence of humans in the loop introduces a lot of imprecision due to their spontaneous reactions). Therefore, the decision procedures need more information, then the estimation, identification and prediction algorithms come to the attention. In most of these applications, even the nominal simplified models are nonlinear, and in order to solve the problem of estimation and control in nonlinear and uncertain systems, a popular approach is based on the Linear Parameter-Varying (LPV) representation of their dynamics \cite{Shamma2012,Marcos_Balas04,Shamma_Cloutier93,Tan97}, since it allows to reduce the problem to the linear context at the price of augmented parametric variation.
+There are plenty of emerging application domains nowadays, where the decision algorithms have to operate in the conditions of a severe uncertainty. Therefore, the decision procedures need more information, then the estimation, identification and prediction algorithms come to the attention. In most of these applications, even the nominal simplified models are nonlinear, and in order to solve the problem of estimation and control in nonlinear and uncertain systems, a popular approach is based on the Linear Parameter-Varying (LPV) representation of their dynamics \cite{Shamma2012,Marcos_Balas04,Shamma_Cloutier93,Tan97}, since it allows to reduce the problem to the linear context at the price of augmented parametric variation.
 
-In the presence of uncertainty (unknown parameters or/and external disturbances) the design of a conventional estimator or predictor, approaching the ideal value of the state, can be realized under restrictive assumptions only. However, an interval estimation/prediction remains frequently feasible: using input-output information an algorithm evaluates the set of admissible values (interval) for the state at each instant of time \cite{Efimov2016,Raiessi2018}. The interval length must be minimized via a parametric tuning of the system, and it is typically proportional to the size of the model uncertainty \cite{Chebotarev2015}. It is worth stressing that the interval estimation or prediction is not a relaxation of the original problem, in fact it is an improvement since the interval mean value can be used as the state pointwise estimate, while the interval bounds provide a simultaneous accuracy evaluation for given uncertainty.
+In the presence of uncertainty (unknown parameters or/and external disturbances) the design of a conventional estimator or predictor, approaching the ideal value of the state, can be realized under restrictive assumptions only. However, an interval estimation/prediction remains frequently feasible: using input-output information an algorithm evaluates the set of admissible values (interval) for the state at each instant of time \cite{Efimov2016,Raiessi2018}. The interval length must be minimized via a parametric tuning of the system, and it is typically proportional to the size of the model uncertainty \cite{Chebotarev2015}.
 
 There are many approaches to design interval/set-membership estimators and predictors \cite{Jaulin02,Kieffer_Walter04,Bernard_Gouze04,Moisan_Bernard_Gouze09}, and this paper focuses on the design based on the monotone systems theory \cite{Bernard_Gouze04,Moisan_Bernard_Gouze09,RVZ10,REZ11,Efimov_a2012}.
-In such a way the main difficulty for synthesis consists in ensuring cooperativity of the interval error dynamics by a proper design of the algorithm. As it has been shown in \cite{MazencBernard11,REZ11,Combastel2012}, such a complexity of the design can be handled by applying an additional transformation of coordinates, which maps a stable system into a stable and monotone one. An approach for selection of a constant similarity transformation matrix representing a given interval of matrices to an interval of Metzler matrices (providing monotonicity) has been developed in \cite{Efimov_a2013,Chebotarev2015}. 
+In such a way the main difficulty for synthesis consists in ensuring cooperativity of the interval error dynamics by a proper design of the algorithm. As it has been shown in \cite{MazencBernard11,REZ11,Combastel2012}, such a complexity of the design can be handled by applying an additional transformation of coordinates to map a stable system into a stable and monotone one, see also \cite{Efimov_a2013,Chebotarev2015}. 
 
-The objective of this paper is to propose an interval predictor for linear time-invariant (LTI) and LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. In other words, an important problem is to keep the interval predictor stability in the presence of uncertainties and saving the interval inclusion property of the estimates, then an unstable system can definitely enclose the trajectories of a stable one, but at the price of the precision. To solve this problem, first, a generic predictor is proposed for an LPV system, whose estimates can be combined with the interval frequency based estimator presented earlier. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Second, we revisit the case of LTI models and demonstrate an asymptotic accuracy improvement that can be achieved if an additional information about external signals are given: the admissible interval of frequency spectrum. Finally, the utility of the developed theory is demonstrated on the problem of path planning for a self-driving car by making comparison with earlier results from \cite{Leurent2018}.
-
-The paper is organized as follows. An introduction to the theory of interval estimation for LTI systems is given in Section \ref{sec:Preliminaries}. The problem statement and a motivating example are introduced in Section \ref{sec:Problem-statement}. An improved interval predictor is presented in Section \ref{sec:Main-results}. The asymptotic accuracy is enhanced using frequency based estimation in Section \ref{sec:Frequency}. Application of the developed theory to the problem of path planning for an autonomous vehicle is shown in Section \ref{sec:Examples}.
+The objective of this paper is to propose an interval predictor for LPV systems. The main difficulty to overcome is the predictor stability, which contrarily to an observer cannot be imposed by a proper design of the gains. An interval inclusion of the uncertain components can be restrictive and transform an initially stable system to an unstable one. To solve this problem, a generic predictor is proposed for an LPV system. To analyze stability of the predictor, which is modeled by a nonlinear Lipschitz dynamics, a novel non-conservative Lyapunov function is developed, whose features can be verified through solution of linear matrix inequalities (LMIs). Finally, the utility of the developed theory is demonstrated on the problem of robust path planning for a self-driving car by making comparison with earlier results from \cite{Leurent2018}.
 
 \section{\label{sec:Preliminaries} Preliminaries}
 
-We denote the real numbers  by $\mathbb{R}$, the integers by $\N$, $\R_{+}=\{\tau\in\R:\tau\ge0\}$ and $\N_{+}=\N\cap\R_{+}$. Euclidean norm for a vector $x\in\mathbb{R}^{n}$ will be denoted as $|x|$, and for a measurable and locally essentially bounded input $u:\mathbb{R}_{+}\to\mathbb{R}$ the symbol $||u||_{[t_{0},t_{1}]}$ denotes its $L_{\infty}$ norm:
-\[
-||u||_{[t_{0},t_{1}]}=\text{ess}\sup_{t\in[t_{0},t_{1})}|u(t)|,
-\]
-if $t_{1}=+\infty$ then we will simply write $||u||$. We will denote as $\mathcal{L}_{\infty}$ the set of all inputs $u$ with the property $||u||<\infty$. 
+We denote the real numbers  by $\mathbb{R}$, the integers by $\N$, $\R_{+}=\{\tau\in\R:\tau\ge0\}$,  $\N_{+}=\N\cap\R_{+}$ and the sequence of integers $1,...,k$ as $\overline{1,k}$. Euclidean norm for a vector $x\in\mathbb{R}^{n}$ will be denoted as $|x|$, and for a measurable and locally essentially bounded input $u:\mathbb{R}_{+}\to\mathbb{R}$ we denote its $L_{\infty}$ norm by $
+||u||_{[t_{0},t_{1}]}=\text{ess}\sup_{t\in[t_{0},t_{1})}|u(t)|
+$
+. If $t_{1}=+\infty$ then we will simply write $||u||$. We will denote as $\mathcal{L}_{\infty}$ the set of all inputs $u$ with the property $||u||<\infty$. 
 
-Denote the sequence of integers $1,...,k$ as $\overline{1,k}$. 
-
-The symbols $I_{n}$, $E_{n\times m}$ and $E_{p}$ denote the identity matrix with dimension $n\times n$, and the matrices with all elements equal 1 with dimensions $n\times m$ and $p\times1$, respectively. The normal basis vectors in $\R^{n}$ are denoted as $e_{i}=[0\dots0\;1\;\dots0]\tr$ for $i=\overline{1,n}$, where $1$ appears in the $i^{\text{th}}$ position.
+The symbols $I_{n}$, $E_{n\times m}$ and $E_{p}$ denote the identity matrix with dimension $n\times n$, and the matrices with all elements equal 1 with dimensions $n\times m$ and $p\times1$, respectively.
+% The normal basis vectors in $\R^{n}$ are denoted as $e_{i}=[0\dots1\dots0]\tr$ where $1$ appears in the $i^{\text{th}}$ position.
 
 For a matrix $A\in\R^{n\times n}$ the vector of its eigenvalues is denoted as $\lambda(A)$, $||A||_{max}=\max_{i=\overline{1,n},j=\overline{1,n}}|A_{i,j}|$ (the elementwise maximum norm, it is not sub-multiplicative) and $||A||_{2}=\sqrt{\max_{i=\overline{1,n}}\lambda_{i}(A\tr A)}$ (the induced $L_{2}$ matrix norm), the relation $||A||_{max}\le||A||_{2}\le n||A||_{max}$ is satisfied between these norms.
 
@@ -142,7 +133,7 @@ This result allows to represent the system \eqref{eq:LTI_syst} in its nonnegativ
 \begin{lem}
 \label{lem:l3}\textup{\cite{Efimov_a2013}} Let $D\in\Xi\subset\R^{n\times n}$ be a matrix variable satisfying the interval constraints $\Xi=\{D\in\R^{n\times n}:\,D_{a}-\Delta\le D\le D_{a}+\Delta\}$ for some $D_{a}^{\text{T}}=D_{a}\in\R^{n\times n}$ and $\Delta\in\R_{+}^{n\times n}$. If for some constant $\mu\in\R_{+}$ and a diagonal matrix $\Upsilon\in\R^{n\times n}$ the Metzler matrix $Y=\mu E_{n\times n}-\Upsilon$ has the same eigenvalues as the matrix $D_{a}$, then there is an orthogonal matrix $S\in\R^{n\times n}$ such that the matrices $S^{\text{T}}DS$ are Metzler for all $D\in\Xi$ provided that $\mu>n||\Delta||_{max}$.\textup{ }
 \end{lem}
-In the last lemma, the existence of similarity transformation is proven for an interval of matrices, \emph{e.g}. in the case of LPV dynamics.
+In the last lemma, the existence of similarity transformation is proven for an interval of matrices, \emph{e.g}. LPV dynamics.
 
 \section{\label{sec:Problem-statement} Problem statement}
 
@@ -150,7 +141,7 @@ Consider an LPV system:
 \begin{equation}
 \dot{x}(t)=A(\theta(t))x(t)+Bd(t),\;t\geq0,\label{eq:LPV_syst}
 \end{equation}
-where $x(t)\in\R^{n}$ is the state, $\theta(t)\in\Pi\subset\R^{r}$ is the vector of scheduling parameters with a known set of admissible values $\Pi$, $\theta\in\L_{\infty}^{r}$; the signal $d:\R_{+}\to\R^{m}$ is the external input. The values of the scheduling vector $\theta(t)$ are not available for measurements, and only the set of admissible values $\Pi$ is known. The matrix $B\in\R^{n\times m}$ is known, the matrix function $A:\Pi\to\R^{n\times n}$ is locally bounded (continuous) and also known.
+where $x(t)\in\R^{n}$ is the state, $\theta(t)\in\Pi\subset\R^{r}$ is the vector of scheduling parameters with a known set of admissible values $\Pi$, $\theta\in\L_{\infty}^{r}$; the signal $d:\R_{+}\to\R^{m}$ is the external input. The values of the scheduling vector $\theta(t)$ are not available for measurements, and only the set of admissible values $\Pi$ is known. The matrix $B\in\R^{n\times m}$ is known, the matrix function $A:\Pi\to\R^{n\times n}$ is locally bounded (continuous) and known.
 
 The following assumptions will be used in this work.
 \begin{assumption}
@@ -262,97 +253,70 @@ A_{0} & 0\\
 \end{gather*}
 }then the predictor \eqref{eq:IP_main} is input-to-state stable with respect to the inputs $\underline{d}$, $\overline{d}$.
 \end{thm}
-Note the requirement that the matrix $P$ has to be diagonal is not restrictive, since for a Metzler matrix $\mathcal{A}$, its stability is equivalent to existence of a diagonal solution $P$ of the Lyapunov equation $\mathcal{A}^{\top}P+P\mathcal{A}\prec0$ \cite{FarinaRinaldi2000}.
-\begin{proof}
-First, let us demonstrate \eqref{eq:Interval_Goal}, to this end note that
-\[
--\Delta A_{i}^{-}\leq\lambda_{i}\Delta A_{i}=\lambda_{i}\Delta A_{i}^{+}-\lambda_{i}\Delta A_{i}^{-}\leq\Delta A_{i}^{+}
-\]
-for any $\lambda_{i}\in[0,1],$ then using Lemma \ref{lem:interval} we obtain
-\[
--\Delta A_{i}^{+}\underline{x}^{-}-\Delta A_{i}^{-}\overline{x}^{+}\leq\lambda_{i}\Delta A_{i}x\leq\Delta A_{i}^{+}\overline{x}^{+}+\Delta A_{i}^{-}\underline{x}^{-}
-\]
-provided that $\underline{x}\leq x\leq\overline{x}$. Hence,
-\[
--\Delta A_{+}\underline{x}^{-}-\Delta A_{-}\overline{x}^{+}\leq\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x\leq\Delta A_{+}\overline{x}^{+}+\Delta A_{-}\underline{x}^{-}
-\]
-and introducing usual interval estimation errors $\underline{e}=x-\underline{x}$ and $\overline{e}=\overline{x}-x$ and calculating their dynamics we get:
-\begin{eqnarray*}
-\dot{\underline{e}}(t) & = & A_{0}\underline{e}(t)+\underline{r}_{1}(t)+\underline{r}_{2}(t),\\
-\dot{\overline{e}}(t) & = & A_{0}\overline{e}(t)+\overline{r}_{1}(t)+\overline{r}_{2}(t),
-\end{eqnarray*}
-where
-\begin{gather*}
-\underline{r}_{1}=\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x+\Delta A_{+}\underline{x}^{-}+\Delta A_{-}\overline{x}^{+},\\
-\underline{r}_{2}=Bd-B^{+}\underline{d}+B^{-}\overline{d},\\
-\overline{r}_{1}=\Delta A_{+}\overline{x}^{+}+\Delta A_{-}\underline{x}^{-}-\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x,\\
-\overline{r}_{2}=B^{+}\overline{d}-B^{-}\underline{d}-Bd.
-\end{gather*}
-Non-negativity or $\underline{r}_{2}$ and $\overline{r}_{2}$ follows from Assumption \ref{ass:a2} and Lemma \ref{lem:interval}. The signals $\underline{r}_{1}$ and $\overline{r}_{1}$ are also nonnegative provided that \eqref{eq:Interval_Goal} holds and due to the calculations above. Note that the relations \eqref{eq:Interval_Goal} are satisfied for $t=0$ by construction and Assumption \ref{ass:a1}, then since the matrix $A_{0}$ is Metzler by Assumption \ref{ass:a3}, we have that $\dot{\underline{e}}_{i}(0)\in\R_{+}^{n}$ or $\dot{\overline{e}}_{i}(0)\in\R_{+}^{n}$ provided that $e_{i}(0)=0$ or $e_{i}(0)=0$, respectively, for any $i=\overline{1,n}$ (the error cannot become negative). Next, repeating these arguments it is possible to show that $\underline{e}(t)\geq0$ and $\overline{e}(t)\geq0$ for all $t\geq0$ \cite{Smith95}, which confirms the relations \eqref{eq:Interval_Goal}.
 
-Second, let us consider the stability of \eqref{eq:IP_main}, and for this purpose define the extended state vector as $X=[\underline{x}^{\top}\;\;\overline{x}^{\top}]^{\top}$, whose dynamics admit the differential equation:
-\[
-\dot{X}(t)=\mathcal{A}X(t)+R_{+}X^{+}(t)-R_{-}X^{-}(t)+\delta(t),
-\]
-where
-\begin{gather*}
-\delta(t)=\left[\begin{array}{cc}
--B^{-} & B^{+}\\
-B^{+} & -B^{-}
-\end{array}\right]\left[\begin{array}{c}
-\overline{d}(t)\\
-\underline{d}(t)
-\end{array}\right]
-\end{gather*}
-is a bounded input vector, whose norm is proportional to $\underline{d}$,
-$\overline{d}$. Consider a candidate Lyapunov function:
-\begin{gather*}
-V(X)=X^{\top}PX+X{}^{\top}Z_{+}X^{+}-X^{\top}Z_{-}X^{-}\\
-=\sum_{k=1}^{2n}P_{k,k}X_{k}^{2}+(Z_{+})_{k,k}X_{k}X_{k}^{+}-(Z_{-})_{k,k}X_{k}X_{k}^{-}\\
-=\sum_{k=1}^{2n}P_{k,k}X_{k}^{2}+(Z_{+})_{k,k}|X_{k}|X_{k}^{+}+(Z_{-})_{k,k}|X_{k}|X_{k}^{-},
-\end{gather*}
-which is positive definite provided that
-\[
-P+\min\{Z_{+},Z_{-}\}>0,
-\]
-and whose derivative for the system dynamics takes the form:
-\begin{gather*}
-\dot{V}=2\dot{X}^{\top}PX+2\dot{X}^{\top}Z_{+}X^{+}-2\dot{X}^{\top}Z_{-}X^{-}\\
-=\left[\begin{array}{c}
-X\\
-X^{+}\\
--X^{-}\\
-\delta
-\end{array}\right]^{\top}\Upsilon\left[\begin{array}{c}
-X\\
-X^{+}\\
--X^{-}\\
-\delta
-\end{array}\right]-X^{\top}QX-(X^{+})^{\top}Q_{+}X^{+}\\
--(X^{-})^{\top}Q_{-}X^{-}-2(X^{+})^{\top}\Psi X^{-}-2(X^{+})^{\top}\Psi_{+}X\\
--2(-X^{-})^{\top}\Psi_{-}X+\delta^{\top}\Gamma\delta.
-\end{gather*}
-Note that
-\begin{gather*}
-(X^{+})^{\top}\Psi X^{-}=0,\\
-(X^{+})^{\top}\Psi_{+}X\geq0,\;(-X^{-})^{\top}\Psi_{-}X\geq0
-\end{gather*}
-for any diagonal matrix $\Psi$ and
-\[
-\Psi_{+}\geq0,\;\Psi_{-}\geq0.
-\]
-Hence, if $\Upsilon\preceq0$, as it is assumed in the theorem, we obtain that
-\begin{eqnarray*}
-\dot{V} & \leq & -X^{\top}QX-(X^{+})^{\top}Q_{+}X^{+}-(X^{-})^{\top}Q_{-}X^{-}\\
- &  & -2(X^{+})^{\top}\Psi_{+}X-2(-X^{-})^{\top}\Psi_{-}X+\delta^{\top}\Gamma\delta\\
- & \leq & -X^{\top}\Omega X+\delta^{\top}\Gamma\delta,
-\end{eqnarray*}
-where
-\[
-\Omega=Q+\min\{Q_{+},Q_{-}\}+2\min\{\Psi_{+},\Psi_{-}\}>0
-\]
-is a diagonal matrix. The substantiated properties of $V$ and its derivative imply that \eqref{eq:IP_main} is input-to-state stable \cite{Khalil2002} with respect to the input $\delta$ (or, by its definition, with respect to $(\underline{d},\overline{d})$).
+Note the requirement that the matrix $P$ has to be diagonal is not restrictive, since for a Metzler matrix $\mathcal{A}$, its stability is equivalent to existence of a diagonal solution $P$ of the Lyapunov equation $\mathcal{A}^{\top}P+P\mathcal{A}\prec0$ \cite{FarinaRinaldi2000}.
+
+\begin{proof}
+	First, let us demonstrate \eqref{eq:Interval_Goal}, to this end note that
+%	\[
+%	-\Delta A_{i}^{-}\leq\lambda_{i}\Delta A_{i}=\lambda_{i}\Delta A_{i}^{+}-\lambda_{i}\Delta A_{i}^{-}\leq\Delta A_{i}^{+}
+%	\]
+%	for any $\lambda_{i}\in[0,1],$ then using Lemma \ref{lem:interval} we obtain
+%	\[
+%	-\Delta A_{i}^{+}\underline{x}^{-}-\Delta A_{i}^{-}\overline{x}^{+}\leq\lambda_{i}\Delta A_{i}x\leq\Delta A_{i}^{+}\overline{x}^{+}+\Delta A_{i}^{-}\underline{x}^{-}
+%	\]
+%	provided that $\underline{x}\leq x\leq\overline{x}$. Hence,
+	\[
+	-\Delta A_{+}\underline{x}^{-}-\Delta A_{-}\overline{x}^{+}\leq\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x\leq\Delta A_{+}\overline{x}^{+}+\Delta A_{-}\underline{x}^{-}
+	\]
+	and introducing usual interval estimation errors $\underline{e}=x-\underline{x}$ and $\overline{e}=\overline{x}-x$ and calculating their dynamics we get:
+	\begin{eqnarray*}
+		\dot{\underline{e}}(t) & = & A_{0}\underline{e}(t)+\underline{r}_{1}(t)+\underline{r}_{2}(t),\\
+		\dot{\overline{e}}(t) & = & A_{0}\overline{e}(t)+\overline{r}_{1}(t)+\overline{r}_{2}(t),
+	\end{eqnarray*}
+	where
+	\begin{gather*}
+	\underline{r}_{1}=\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x+\Delta A_{+}\underline{x}^{-}+\Delta A_{-}\overline{x}^{+},\\
+	\underline{r}_{2}=Bd-B^{+}\underline{d}+B^{-}\overline{d},\\
+	\overline{r}_{1}=\Delta A_{+}\overline{x}^{+}+\Delta A_{-}\underline{x}^{-}-\sum_{i=1}^{N}\lambda_{i}\Delta A_{i}x,\\
+	\overline{r}_{2}=B^{+}\overline{d}-B^{-}\underline{d}-Bd.
+	\end{gather*}
+	Non-negativity or $\underline{r}_{2}$ and $\overline{r}_{2}$ follows from Assumption \ref{ass:a2} and Lemma \ref{lem:interval}. The signals $\underline{r}_{1}$ and $\overline{r}_{1}$ are also nonnegative provided that \eqref{eq:Interval_Goal} holds and due to the calculations above. Note that the relations \eqref{eq:Interval_Goal} are satisfied for $t=0$ by construction and Assumption \ref{ass:a1}, then it is possible to show that $\underline{e}(t)\geq0$ and $\overline{e}(t)\geq0$ for all $t\geq0$ \cite{Smith95}, which confirms the relations \eqref{eq:Interval_Goal}.
+	
+	Second, let us consider the stability of \eqref{eq:IP_main}, and for this purpose define the extended state vector as $X=[\underline{x}^{\top}\;\;\overline{x}^{\top}]^{\top}$, whose dynamics admit the differential equation:
+	\[
+	\dot{X}(t)=\mathcal{A}X(t)+R_{+}X^{+}(t)-R_{-}X^{-}(t)+\delta(t),
+	\]
+	where
+	\begin{gather*}
+	\delta(t)=\left[\begin{array}{cc}
+	-B^{-} & B^{+}\\
+	B^{+} & -B^{-}
+	\end{array}\right]\left[\begin{array}{c}
+	\overline{d}(t)\\
+	\underline{d}(t)
+	\end{array}\right]
+	\end{gather*}
+	is a bounded input vector, whose norm is proportional to $\underline{d}$,
+	$\overline{d}$. Following \cite{Efimov_CDC2019}, consider a candidate Lyapunov function:
+	\begin{gather*}
+	V(X)=X^{\top}PX+X{}^{\top}Z_{+}X^{+}-X^{\top}Z_{-}X^{-},
+	\end{gather*}
+	which is positive definite provided that
+	\[
+	P+\min\{Z_{+},Z_{-}\}>0,
+	\]
+	and whose derivative for the system dynamics takes the form, if $\Upsilon\preceq0$:
+	\begin{eqnarray*}
+		\dot{V} & \leq & -X^{\top}\Omega X+\delta^{\top}\Gamma\delta,
+	\end{eqnarray*}
+	where
+	\[
+	\Omega=Q+\min\{Q_{+},Q_{-}\}+2\min\{\Psi_{+},\Psi_{-}\}>0
+	\]
+	is a diagonal matrix. The substantiated properties of $V$ and its derivative imply that \eqref{eq:IP_main} is input-to-state stable \cite{Khalil2002} with respect to the input $\delta$ (or, by its definition, with respect to $(\underline{d},\overline{d})$).
 \end{proof}
+
 \begin{rem}
 The LMIs of the above theorem are not conservative, since the restriction on positive definiteness of involved matrix variables is not imposed on all of them separately, but on their combinations:
 \begin{gather*}
@@ -365,31 +329,6 @@ $
 $
 \end{rem}
 
-\begin{rem}
-Assume that $-\underline{d}=\overline{d}=const\ne0$ and the conditions of Theorem \ref{thm:main} are satisfied, then asymptotically $\underline{x}$ and $\overline{x}$ are negative and positive, respectively. Therefore, the dynamics of \eqref{eq:IP_main} takes the form for sufficiently high values of $t\geq0$:
-\begin{eqnarray*}
-\dot{\underline{x}}(t) & = & (A_{0}-\Delta A_{+})\underline{x}(t)-\Delta A_{-}\overline{x}(t)\\
- &  & +B^{+}\underline{d}-B^{-}\overline{d},\\
-\dot{\overline{x}}(t) & = & (A_{0}+\Delta A_{+})\overline{x}(t)+\Delta A_{-}\underline{x}(t)\\
- &  & +B^{+}\overline{d}-B^{-}\underline{d},
-\end{eqnarray*}
-which is a linear system
-\begin{eqnarray}
-\label{eq:linear-asympt}
-\dot{X}(t) & = & \left[\begin{array}{cc}
-A_{0}-\Delta A_{+} & -\Delta A_{-}\\
-\Delta A_{-} & A_{0}+\Delta A_{+}
-\end{array}\right]X(t)\\
- &  & +\left[\begin{array}{cc}
--B^{-} & B^{+}\\
-B^{+} & -B^{-}
-\end{array}\right]\left[\begin{array}{c}
-\overline{d}\\
-\underline{d}
-\end{array}\right],
-\end{eqnarray}
-where as before $X=[\underline{x}^{\top}\;\;\overline{x}^{\top}]^{\top}$.
-\end{rem}
 \begin{example*}
 [motivating, continue] Let us apply the predictor \eqref{eq:IP_main}
 to the motivation example:
@@ -406,96 +345,76 @@ where $A_{0}=-\overline{\theta}$ is chosen, then $\Delta A_{+}=\overline{\theta}
 \end{figure}
 \end{example*}
 
-
+\begin{comment}
 \section{\label{sec:Frequency} Frequency based interval estimation}
-The domain of convergence of the linear system \eqref{eq:linear-asympt}, and hence of \eqref{eq:IP_main}, can be tightened under an additional hypothesis that $d(t)$ has a known and bounded frequency spectrum.
-Assume that there exist two signals $\underline{\omega},\overline{\omega}:\R_{+}\to\R^{q}$ and two vectors $\underline{x}_{0},\overline{x}_{0}\in\R^{n}$ such that
-\begin{gather*}
-\underline{\omega}(t)\leq\omega(t)\leq\overline{\omega}(t),\quad\forall t\geq0,\\
-\underline{x}_{0}\leq x(0)\leq\overline{x}_{0},
-\end{gather*} and there is a matrix $L\in\R^{n\times p}$ such that $A-LC$ is Hurwitz and Metzler, then an interval observer for the system \eqref{eq:LTI_syst} can be written as follows \cite{REZ11}:
-\begin{eqnarray}
-\dot{\underline{x}}(t) & = & (A-LC)\underline{x}(t)+Ly(t)\nonumber \\
- &  & +(B-LD)^{+}\underline{\omega}(t)-(B-LD)^{-}\overline{\omega}(t),\nonumber \\
-\dot{\overline{x}}(t) & = & (A-LC)\overline{x}(t)+Ly(t)\label{eq:IO_LTI}\\
- &  & +(B-LD)^{+}\overline{\omega}(t)-(B-LD)^{-}\underline{\omega}(t),\nonumber \\
- &  & \underline{x}(0)=\underline{x}_{0},\;\overline{x}(0)=\overline{x}_{0},\nonumber 
-\end{eqnarray}
-guaranteeing the desired interval relations:
-\[
-\underline{x}(t)\leq x(t)\leq\overline{x}(t),\quad\forall t\geq0.
-\]
-This solution uses only information about amplitude of the external input $\omega$, and its precision can be largely improved if we assume that there is also information about admissible frequency spectrum in $\omega$:
+The domain of convergence can be tightened under an additional hypothesis that $d(t)$ has a known and bounded frequency spectrum. Indeed, the solution of the linear system \eqref{eq:linear-asympt}, and hence of \eqref{eq:IP_main} uses only information about amplitude of the external input $d$, and its precision can be largely improved if we assume that there is also information about admissible frequency spectrum in $\omega$:
 \begin{lem}
-\label{lem:IntFreq} Let there exist $s_{1},s_{2}\in\N_{+}$ and $T,W>0$
-such that
-\[
-\omega(t)=a_{0}+\sum_{s=s_{1}}^{s_{2}}a_{s}\sin\left(\frac{2\pi s}{T}t+\phi_{s}\right),
-\]
-for some $a_{0},a_{s},\phi_{s}\in\R$ with $s=\overline{s_{1},s_{2}}$ and $||\omega||\leq W$. Then for any $x(0)\in\R^{n}$ in \eqref{eq:LTI_syst} and any $\epsilon>0$ there exists $\tau>0$ such that:
-\[
-|x_{i}(t)|\leq\sup_{w\in[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]}|e_{i}(jwI_{n}-A)^{-1}BE_{q}|W+\epsilon\quad\forall t\geq\tau,
-\]
-where $j$ corresponds to the imaginary unit, provided that the matrix $A$ is Hurwitz.
+	\label{lem:IntFreq} Let there exist $s_{1},s_{2}\in\N_{+}$ and $T,W>0$
+	such that
+	\[
+	d(t)=a_{0}+\sum_{s=s_{1}}^{s_{2}}a_{s}\sin\left(\frac{2\pi s}{T}t+\phi_{s}\right),
+	\]
+	for some $a_{0},a_{s},\phi_{s}\in\R$ with $s=\overline{s_{1},s_{2}}$ and $||d||\leq W$. Then for any $x(0)\in\R^{n}$ in \eqref{eq:LTI_syst} and any $\epsilon>0$ there exists $\tau>0$ such that:
+	\[
+	|x_{i}(t)|\leq\sup_{w\in[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]}|e_{i}(jwI_{n}-A)^{-1}BE_{q}|W+\epsilon\quad\forall t\geq\tau,
+	\]
+	where $j$ corresponds to the imaginary unit, provided that the matrix $A$ is Hurwitz.
 \end{lem}
 \begin{proof}
-The solution of the system \eqref{eq:LTI_syst} can be written as follows:
-\[
-x(t)=e^{At}x(0)+\int_{0}^{t}e^{A(t-\sigma)}B\omega(\sigma)d\sigma,
-\]
-where the first term ($e^{At}x(0)$) is converging asymptotically to zero since the matrix $A$ is Hurwitz by hypothesis. And in order to estimate the second term, the Bode magnitude plot can be used, which provides the asymptotic amplitude of the state for the given frequency input. Under the introduced hypotheses, the frequency of the input lies in the interval $[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]$ and the amplitude is upper-bounded by $W$, then there exist constants $\tau>0$ and $\epsilon>0$, related with $x(0)$, such that the claim of the lemma is true.
+	The solution of the system \eqref{eq:LTI_syst} can be written as follows:
+	\[
+	x(t)=e^{At}x(0)+\int_{0}^{t}e^{A(t-\sigma)}B\omega(\sigma)d\sigma,
+	\]
+	where the first term ($e^{At}x(0)$) is converging asymptotically to zero since the matrix $A$ is Hurwitz by hypothesis. And in order to estimate the second term, the Bode magnitude plot can be used, which provides the asymptotic amplitude of the state for the given frequency input. Under the introduced hypotheses, the frequency of the input lies in the interval $[\frac{2\pi}{T}s_{1},\frac{2\pi}{T}s_{2}]$ and the amplitude is upper-bounded by $W$, then there exist constants $\tau>0$ and $\epsilon>0$, related with $x(0)$, such that the claim of the lemma is true.
 \end{proof}
-The interval observer \eqref{eq:IO_LTI}, if we assume that $\overline{\omega}(t)=-\underline{\omega}(t)=WE_{q}$ and $L=0$, asymptotically will converge to the interval $[-|e_{i}A{}^{-1}BE_{q}|W,|e_{i}A{}^{-1}BE_{q}|W]$ (that corresponds to the result of Lemma \ref{lem:IntFreq} with $s_{1}=s_{2}=0$), which is the estimate from Bode plot given for the frequency $0$, and it is a well-known fact that for many stable systems the Bode magnitude plot is a decreasing function of the frequency. Therefore, if the information about frequency spectrum is known and it is separated from zero, then the asymptotic interval accuracy can be significantly improved. Of course, Lemma \ref{lem:IntFreq} can be applied iteratively for a decreasing sequence of $\epsilon>0$ and an increasing one in $\tau>0$.
+The interval observer \eqref{eq:IO_LTI}, if we assume that $\overline{d}(t)=-\underline{d}(t)=WE_{q}$, asymptotically will converge to the interval $[-|e_{i}A{}^{-1}BE_{q}|W,|e_{i}A{}^{-1}BE_{q}|W]$ (that corresponds to the result of Lemma \ref{lem:IntFreq} with $s_{1}=s_{2}=0$), which is the estimate from Bode plot given for the frequency $0$, and it is a well-known fact that for many stable systems the Bode magnitude plot is a decreasing function of the frequency. Therefore, if the information about frequency spectrum is known and it is separated from zero, then the asymptotic interval accuracy can be significantly improved. Of course, Lemma \ref{lem:IntFreq} can be applied iteratively for a decreasing sequence of $\epsilon>0$ and an increasing one in $\tau>0$.
 \begin{example*}
-Let us illustrate these conclusions on a simple example:
-\begin{gather*}
-A=\left[\begin{array}{cc}
--1 & 1\\
-0.1 & -1
-\end{array}\right],\;B=\left[\begin{array}{c}
--2\\
-1
-\end{array}\right],\;L=0,\\
-\overline{\omega}(t)=-\underline{\omega}(t)=1,\\
-\overline{x}_{0}=[2\;1]\tr,\;\underline{x}_{0}=[-1\;-2]\tr.
-\end{gather*}
-And assume that
-$
-\omega(t)=\omega_0\sin(st+\phi_0),\;s=7,
-$
-then the system trajectories and intervals are shown in Fig. \ref{fig:IntFreq}. 
-\begin{figure}
-\begin{centering}
-\includegraphics[width=\linewidth]{asymptotic}
-\par\end{centering}
-\caption{\label{fig:IntFreq} The results of prediction for different values
-of the frequency. Taking $\tau=\frac{4}{\min_{i=\overline{1,n}}|\lambda_{i}(A)|}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. }
-\end{figure}
+	Let us illustrate these conclusions on a simple example:
+	\begin{gather*}
+	A=\left[\begin{array}{cc}
+	-1 & 1\\
+	0.1 & -1
+	\end{array}\right],\;B=\left[\begin{array}{c}
+	-2\\
+	1
+	\end{array}\right],\;L=0,\\
+	\overline{\omega}(t)=-\underline{\omega}(t)=1,\\
+	\overline{x}_{0}=[2\;1]\tr,\;\underline{x}_{0}=[-1\;-2]\tr.
+	\end{gather*}
+	And assume that
+	$
+	\omega(t)=\omega_0\sin(st+\phi_0),\;s=7,
+	$
+	then the system trajectories and intervals are shown in Fig. \ref{fig:IntFreq}. 
+	\begin{figure}
+		\begin{centering}
+			\includegraphics[width=\linewidth]{asymptotic}
+			\par\end{centering}
+		\caption{\label{fig:IntFreq} The results of prediction for different values
+			of the frequency. Taking $\tau=\frac{4}{\min_{i=\overline{1,n}}|\lambda_{i}(A)|}=5.85$ and $\epsilon=0.05,$ the trajectories of the interval observer \eqref{eq:IO_LTI} are presented for $t\leq0.5\tau$, and as we can conclude, these estimates are rather conservative. Next, for $t\in[0.5\tau,\tau]$ the estimates given in Lemma \ref{lem:IntFreq} for the case $s_{1}=s_{2}=0$ are shown, which are already more accurate. Finally, for $t\geq\tau$ the estimates of Lemma \ref{lem:IntFreq} are presented for $s_{1}=s_{2}=s$, which demonstrate a definite improvement. }
+	\end{figure}
 \end{example*}
+\end{comment}
+
 
 \section{\label{sec:Examples} Prediction for a self-driving vehicle}
 
 We consider the problem of safe decision-making for autonomous highway driving \cite{highway-env}. The videos and source code of all experiments are available\footnote{\href{https://eleurent.github.io/interval-prediction/}{https://eleurent.github.io/interval-prediction/}}.
 
-An autonomous vehicle is driving on a highway populated with $N$ other agents, and uses Model Predictive Control to plan a sequence of decisions. To that end, it relies on parametrized dynamical model for each agent to predict the future trajectory of each traffic participant: $$\dot{z}_i=f_i(Z,\theta_i),\;i=\overline{1,N},$$ where $f_i$ are described below, $z_i\in\R^4$ is the state of an agent, $Z = [z_1,\dots,z_N]^\top\in\R^{4N}$ and $\theta_i\in\R^5$ is the corresponding vector of unknown parameters. Crucially, this system describes the couplings and interactions between vehicles, so that the autonomous agent can properly anticipate their reactions. 
-However, we assume that we do not have access to the true values of the behavioural parameters $\theta=[\theta_1,\dots,\theta_N]^\top$; instead, we merely know that these parameters lie in a set of admissible values $\Pi\subset\R^{5N}$. In order to act safely in the face of uncertainty, we follow the framework of robust decision-making: the agent must consider all the possible trajectories in the space of $Z$ that each vehicle can follow in order to take its decisions. In this work, we focus on how to compute these trajectory enclosures through interval prediction.
-
-In the following, we describe the system and its associated interval predictor.
+An autonomous vehicle is driving on a highway populated with $N$ other agents, and uses Model Predictive Control to plan a sequence of decisions. To that end, it relies on parametrized dynamical model for each agent to predict the future trajectory of each traffic participant: $$\dot{z}_i=f_i(Z,\theta_i),\;i=\overline{1,N},$$ where $f_i$ are described below, $z_i\in\R^4$ is the state of an agent, $Z = [z_1,\dots,z_N]^\top\in\R^{4N}$, and $\theta_i\in\R^5$ is the corresponding vector of unknown parameters. Crucially, this system describes the couplings and interactions between vehicles, so that the autonomous agent can properly anticipate their reactions. 
+However, we assume that we do not have access to the true values of the behavioural parameters $\theta=[\theta_1,\dots,\theta_N]^\top$; instead, we merely know that these parameters lie in a set of admissible values $\Pi\subset\R^{5N}$. In order to act safely in the face of uncertainty, we follow the framework of robust decision-making: the agent must consider all the possible trajectories in the space of $Z$ that each vehicle can follow in order to take its decisions. In this work, we focus on how to compute these trajectory enclosures through interval prediction. In the following, we describe the system and its associated interval predictor.
 
 \subsection{Kinematics}
 
 The kinematics of any vehicle $i\in\overline{1,N}$ are represented by the Kinematic Bicycle Model \cite{Polack2017}:
 \begin{empheq}[left = \empheqlbrace]{align}
-	\dot{x}_i &= v_i\cos(\psi_i), \nonumber\\
-	\dot{y}_i &= v_i\sin(\psi_i), \nonumber\\
-	\dot{v}_i &= a_i, \nonumber\\
-	\dot{\psi}_i &= \frac{v_i}{l}tan(\beta_i), \nonumber
+	\dot{x}_i &= v_i\cos(\psi_i), &\dot{y}_i &= v_i\sin(\psi_i), \nonumber\\
+	\dot{v}_i &= a_i, &\dot{\psi}_i &= \frac{v_i}{l}tan(\beta_i) \nonumber
 \end{empheq}
-where $(x_i, y_i)$ is the vehicle position, $v_i$ is its forward velocity and $\psi_i$ is its heading, $l$ is the vehicle half-length, $a_i$ is the acceleration command and $\beta_i$ is the slip angle at the centre of gravity, used as a steering command.
+where $(x_i, y_i)$ is the vehicle position, $v_i$ its forward velocity and $\psi_i$ its heading, $l$ its half-length, $a_i$ is the acceleration command and $\beta_i$ is the slip angle at the centre of gravity, used as a steering command, then $z_i=[x_i,y_i,v_i,\psi_i]^\top$.
 
-\subsection{Longitudinal control}
+\subsection{Control}
 Longitudinal behaviour is modelled by a linear controller using three features inspired from the intelligent driver model (IDM) \cite{Treiber2000}: a desired velocity, a braking term to drive slower than the front vehicle, and a braking term to respect a safe distance to the front vehicle.
-
 Denoting $f_i$ the index of the front vehicle preceding vehicle $i$, the acceleration command can be presented as follows:
 \begin{equation*}
 	a_i = \begin{bmatrix}
@@ -508,8 +427,6 @@ Denoting $f_i$ the index of the front vehicle preceding vehicle $i$, the acceler
 	\label{eq:theta_a}
 \end{equation*}
 where $v_0, d_0$ and $T$ respectively denote the speed limit, jam distance and time gap given by traffic rules.
-
-\subsection{Lateral control}
 
 The lane $L_i$ with the lateral position $y_{L_i}$ and heading $\psi_{L_i}$ is tracked by a cascade controller of lateral position and heading $\beta_i$, which is selected in a way the closed-loop dynamics take the form:
 
@@ -524,13 +441,11 @@ We assume that the drivers choose their steering command $\beta_i$ such that \eq
 
 The system presented so far is non-linear and must be cast into the LPV form. We approximate the non-linearities induced by the trigonometric operators through equilibrium linearisation around $y_i=y_{L_i}$ and $\psi_i=\psi_{L_i}$.
 
-This yields the following longitudinal dynamics:
+This yields the longitudinal dynamics: $\dot{x}_i = v_i$ and
 \begin{align*}
-\dot{x}_i &= v_i,\\
 \dot v_i &= \theta_{i,1} (v_0 - v_i) + \theta_{i,2} (v_{f_i} - v_i) + \theta_{i,3}(x_{f_i} - x_i - d_0 - v_i T),
 \end{align*}
 where $\theta_{i,2}$ and $\theta_{i,3}$ are set to $0$ whenever the corresponding features are not active.
-
 It can be rewritten in the form $$\dot{Z} = A(\theta)(Z-Z_c) + d.$$ For example, in the case of two vehicles only:
 \begin{equation*}
     Z = \begin{bmatrix}
@@ -563,7 +478,7 @@ A(\theta)
 \begin{block}{c[cccc]}
 i & 0 & 0 & 1 & 0 \\
 f_i & 0 & 0 & 0 & 1 \\
-i & -\theta_{i,3} & \theta_{i,3} & -\theta_{i,1}-\theta_{i,2}-\theta_{i,3} & \theta_{i,2} \\
+i & -\theta_{i,3} & \theta_{i,3} & -\theta_{i,1}-\theta_{i,2}-\theta_{i,3}T & \theta_{i,2} \\
 f_i & 0 & 0 & 0 & -\theta_{f_i,1} \\
 \end{block}
 \end{blockarray}
@@ -627,11 +542,11 @@ We use lemmas \ref{lem:l2} and \ref{lem:l3} to compute a similarity transformati
 \end{figure}
 
 
-We show the resulting intervals in Fig.~\ref{fig:highway}. The target vehicle with uncertain behaviour is in blue, while the ego-vehicle is in green. Its trajectory interval is computed over a duration of two seconds and represented by an area filled with a colour gradient representing time. The ground-truth trajectory is shown in blue. In Fig.~\ref{sub:hw-a}, we observe that the direct predictor \eqref{eq:IP_direct} is unstable and quickly diverges to cover the whole road, thus hindering any sensible decision-making. In \cite{Leurent2018}, they had to circumvent this issue by subdividing $\Pi$ and $[\underline{Z}, \overline{Z}]$ to reduce the initial overestimations and merely delay the divergence \cite{Adrot2003}, at the price of a heavy computational load. In stark contrast, we see in Fig.~\ref{sub:hw-b} that the novel predictor \eqref{eq:IP_main} is very stable even over long horizons, which allows the ego-vehicle to plan an overtaking maneuver. Until then, there was little uncertainty in the predicted trajectory for the target vehicle was isolated, but as the ego-vehicle cuts into its lane in Fig.~\ref{sub:hw-c}, we start seeing the  effects of uncertain interactions between the two vehicles, in both longitudinal and lateral directions. Our framework is quite flexible in representing different assumptions on the admissible behaviours. For instance, we show in Fig.~\ref{sub:hw-d} a simulation in which we model a right-hand traffic where drivers are expected to keep to the rightmost lane. In such a situation, it is reasonable to assume that in the absence of any obstacle in front, a vehicle driving on the middle lane will either stay there or return to the right lane, but has no incentive to change to the left-lane. This simple assumption on $L_i$ can easily be incorporated in the interval predictor, and enables the emergence of a realistic behaviour when running the robust decision-making procedure: the ego-vehicle cannot pass another vehicle by its right side, and can only overtake it by its left side. These behaviours displaying safe reasoning under uncertainty are showcased in the attached videos.
+We show the resulting intervals in Fig.~\ref{fig:highway}. The target vehicle with uncertain behaviour is in blue, while the ego-vehicle is in green. Its trajectory interval is computed over a duration of two seconds and represented by an area filled with a colour gradient representing time. The ground-truth trajectory is shown in blue. In Fig.~\ref{sub:hw-a}, we observe that the direct predictor \eqref{eq:IP_direct} is unstable and quickly diverges to cover the whole road, thus hindering any sensible decision-making. In \cite{Leurent2018}, they had to circumvent this issue by subdividing $\Pi$ and $[\underline{Z}, \overline{Z}]$ to reduce the initial overestimations and merely delay the divergence \cite{Adrot2003}, at the price of a heavy computational load. In stark contrast, we see in Fig.~\ref{sub:hw-b} that the novel predictor \eqref{eq:IP_main} is stable even over long horizons, which allows the ego-vehicle to plan an overtaking maneuver. Until then, there was little uncertainty in the predicted trajectory for the target vehicle was isolated, but as the ego-vehicle cuts into its lane in Fig.~\ref{sub:hw-c}, we start seeing the  effects of uncertain interactions between the two vehicles, in both longitudinal and lateral directions. Our framework is quite flexible in representing different assumptions on the admissible behaviours. For instance, we show in Fig.~\ref{sub:hw-d} a simulation in which we model a right-hand traffic where drivers are expected to keep to the rightmost lane. In such a situation, it is reasonable to assume that in the absence of any obstacle in front, a vehicle driving on the middle lane will either stay there or return to the right lane, but has no incentive to change to the left-lane. This simple assumption on $L_i$ can easily be incorporated in the interval predictor, and enables the emergence of a realistic behaviour when running the robust decision-making procedure: the ego-vehicle cannot pass another vehicle by its right side, and can only overtake it by its left side. These behaviours displaying safe reasoning under uncertainty are showcased in the attached videos.
 
 \section{Conclusion}
 
-The prediction problem for uncertain LPV systems is solved by designing an interval predictor, which is described by nonlinear differential equations, and whose stability is evaluated using a new Lyapunov function. The corresponding robust stability conditions are expressed in terms of LMIs. An approach is presented to improve the asymptotic accuracy of interval estimation or prediction in LTI systems provided that the exogenous inputs have a known spectrum of frequencies. The proficiency of the methods is demonstrated in application to a problem of safe motion planning for a self-driving car.
+The prediction problem for uncertain LPV systems is solved by designing an interval predictor, which is described by nonlinear differential equations, and whose stability is evaluated using a new Lyapunov function. The corresponding robust stability conditions are expressed in terms of LMIs. The proficiency of the method is demonstrated in application to a problem of safe motion planning for a self-driving car.
 
 \bibliographystyle{ieeetr}
 \bibliography{interval_lpv}
