@@ -64,7 +64,7 @@ Other examples: [🎞️](assets/rht3.gif) [🎞️](assets/rht4.gif) [🎞️](
 
 ```shell
 cd <path-to-rl-agents>/scripts/
-python experiments.py evaluate configs/HighwayEnv/env.json \
+python experiments.py evaluate configs/HighwayEnv/env_linear.json \
                                configs/HighwayEnv/agents/IntervalRobustPlannerAgent/baseline.json \
                                --test --episodes=1
 ```
