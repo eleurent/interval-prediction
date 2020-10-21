@@ -1,7 +1,33 @@
 theme: jekyll-theme-cayman
 title: Interval Prediction for Continuous-Time Systems with Parametric Uncertainties
-description: Edouard Leurent, Denis Efimov, Tarek Raïssi, Wilfrid Perruquetti
 
 github:
   repository_url: https://github.com/eleurent/rl-agents#irp-interval-based-robust-planning
-  paper_url: https://arxiv.org/abs/1904.04727
+
+publication:
+  name: CDC 2019
+  url: https://cdc2019.ieeecss.org/
+
+paper_url: https://arxiv.org/abs/1904.04727
+slides_url: paper/talk/main.pdf
+
+authors:
+  - name: Edouard Leurent
+    url: http://edouardleurent.com
+    affiliation: INRIA VALSE, Renault
+    affiliation_url: https://team.inria.fr/valse/
+
+  - name: Denis Efimov
+    url: http://researchers.lille.inria.fr/~efimov/
+    affiliation: INRIA VALSE
+    affiliation_url: https://team.inria.fr/valse/
+
+  - name: Tarek Raïssi
+    url: http://raissi.fr/
+    affiliation: CNAM
+    affiliation_url: https://www.cnam.fr/
+
+  - name: Wilfrid Perruquetti
+    url: http://researchers.lille.inria.fr/~perruque/
+    affiliation: Centrale Lille, CNRS, UMR 9189 - CRIStAL
+    affiliation_url: https://centralelille.fr/

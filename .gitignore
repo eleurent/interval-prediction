@@ -7,3 +7,6 @@
 *.synctex.gz
 .idea
 *.pyc
+
+Gemfile*
+_site
