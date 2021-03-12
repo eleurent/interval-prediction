@@ -96,6 +96,10 @@ Leurent, E., Efimov, D., Raïssi, T., and Perruquetti, W., 2019.<br>
 
 ## Install requirements
 
+```shell
+pip install -r requirements.txt
+```
+
 * The environment: [highway-env](https://github.com/eleurent/highway-env)
 * The agents: [rl-agents](https://github.com/eleurent/rl-agents)
 
