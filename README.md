@@ -106,7 +106,7 @@ pip install -r requirements.txt
 ## Interval predictor implementation
 
 * [Generic predictor](https://github.com/eleurent/highway-env/blob/master/highway_env/interval.py#L171)
-* [Traffic LPV system](https://github.com/eleurent/highway-env/blob/master/highway_env/vehicle/uncertainty.py#L199)
+* [Traffic LPV system](https://github.com/eleurent/highway-env/tree/master/highway_env/vehicle/uncertainty)
 
 ## Run a robust planner
 
